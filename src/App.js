@@ -4,7 +4,7 @@ import Video from "./components/Video";
 
 function App() {
 	const [status, setStatus] = useState('')
-	const [data, setData] = useState('')
+	const [data, setData] = useState()
 
 	async function callAPI(url) {
 		setStatus('Downloading...')
@@ -28,15 +28,17 @@ function App() {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
-					// 'Content-Type': 'application/x-www-form-urlencoded',
 				},
-				body: JSON.stringify(data)
+				body: JSON.stringify(data),
+				responseType: "blob",
 			}
 		);
-		const result = await responseSpleeter.json(); // Extracting data as a JSON Object from the response
+		const result = await responseSpleeter;
 
 		setStatus('Success...')
-		setData(result.filename)
+		console.log(result.data)
+		setData(window.URL.createObjectURL(result.data));
+		// setData(result)
 	}
 
 	const handleSubmit = (e) => {
@@ -85,7 +87,11 @@ function App() {
 				<Video />
 			</div> */}
 			<p>{status}</p>
-			{typeof data !== 'undefined' && <p>{data}</p> }
+			{typeof data !== 'undefined' && 
+				<div>
+					<audio id="audio" controls src={data} />
+				</div>
+			}
 		</div>
 	)
 }
