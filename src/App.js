@@ -2,6 +2,37 @@ import React, { useState } from 'react';
 import "./style/style.css";
 import Video from "./components/Video";
 
+// Call api download
+async function download(url) {
+	const responseDownload = await fetch(
+		'/download',
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(url)
+		}
+	);
+	return await responseDownload.json() // Extracting data as a JSON Object from the response
+}
+
+// Call api spleet
+async function spleeter(res) {
+	const responseSpleeter = await fetch(
+		'/spleet',
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(res),
+			responseType: "blob",
+		}
+	);
+	return await responseSpleeter.blob()
+}
+
 function App() {
 	const [status, setStatus] = useState('')
 	const [data, setData] = useState()
@@ -9,74 +40,27 @@ function App() {
 	async function callAPI(url) {
 		setData()
 		setStatus('Downloading...')
-		const responseDownload = await fetch(
-			'/download',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-					// 'Content-Type': 'application/x-www-form-urlencoded',
-				},
-				body: JSON.stringify(url)
-			}
-		);
-		const data = await responseDownload.json(); // Extracting data as a JSON Object from the response
+		
+		let responseDownload
+		try {
+			responseDownload = await download(url)
+		} catch (e) {
+			setStatus('Duration is exceeded... Video must shorter than 10 mins.')
+		}
+		
+		console.log(responseDownload)
 
 		setStatus('Spleeting...')
-		const responseSpleeter = await fetch(
-			'/spleet',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(data),
-				responseType: "blob",
-			}
-		);
-		const result = await responseSpleeter.blob()
+		const responseSpleeter = await spleeter(responseDownload)
 		
-		setStatus('Success...')
-		// const blob = result.blob()
-
-		console.log(result)
-		// console.log(result.body.getReader())
-		setData(URL.createObjectURL(result))
-		// setData(URL.createObjectURL(new Blob([blob], {type: 'audio/wav'})))
-		// setData(result)
+		setStatus('Success!')
+		console.log(responseSpleeter)
+		setData(URL.createObjectURL(responseSpleeter))
 	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		callAPI(e.target.url.value)
-		// setStatus('Downloading...')
-		// fetch("/download",{
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 		// 'Content-Type': 'application/x-www-form-urlencoded',
-		// 	},
-		// 	body: JSON.stringify(e.target.url.value)
-		// })
-		// .then(res => {
-		// 	setStatus('Spleeting...')
-		// 	res.json()
-		// })
-		// .then(data => {
-		// 	fetch("/spleet",{
-		// 		method: 'POST',
-		// 		headers: {
-		// 			'Content-Type': 'application/json'
-		// 		},
-		// 		body: JSON.stringify(data)
-		// 	})
-		// })
-		// .then(res => res.json())
-		// .then(data => {
-		// 	setStatus('Success!')
-		// 	setData(data.filename)
-		// 	console.log(data)
-		// })
 	}
 
 	return (
@@ -88,9 +72,6 @@ function App() {
 				</div>
 				<button type="submit">Submit</button>
 			</form>
-			{/* <div>
-				<Video />
-			</div> */}
 			<p>{status}</p>
 			{/* <audio controls preload="auto">
 				<source src="http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3" type="audio/mp3"/>
