@@ -7,6 +7,7 @@ function App() {
 	const [data, setData] = useState()
 
 	async function callAPI(url) {
+		setData()
 		setStatus('Downloading...')
 		const responseDownload = await fetch(
 			'/download',
@@ -33,11 +34,15 @@ function App() {
 				responseType: "blob",
 			}
 		);
-		const result = await responseSpleeter;
-
+		const result = await responseSpleeter.blob()
+		
 		setStatus('Success...')
-		console.log(result.data)
-		setData(window.URL.createObjectURL(result.data));
+		// const blob = result.blob()
+
+		console.log(result)
+		// console.log(result.body.getReader())
+		setData(URL.createObjectURL(result))
+		// setData(URL.createObjectURL(new Blob([blob], {type: 'audio/wav'})))
 		// setData(result)
 	}
 
@@ -87,9 +92,15 @@ function App() {
 				<Video />
 			</div> */}
 			<p>{status}</p>
-			{typeof data !== 'undefined' && 
+			{/* <audio controls preload="auto">
+				<source src="http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3" type="audio/mp3"/>
+			</audio> */}
+			{typeof data !== 'undefined' &&
 				<div>
-					<audio id="audio" controls src={data} />
+					<p>{data}</p>
+					<audio controls>
+						<source src={data} type="audio/x-wav"/>
+					</audio>
 				</div>
 			}
 		</div>
