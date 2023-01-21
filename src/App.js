@@ -64,26 +64,41 @@ function App() {
 	}
 
 	return (
-		<div>
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor="url">URL:</label>
-					<input className='border-2' type="text" id="url" name="url" />
+		<div className='flex justify-center'>
+			<main className='container flex justify-center'>
+				<div className='mt-10'>
+					<form onSubmit={handleSubmit} className='text-center'>
+						<div>
+							<label htmlFor='url' className='block text-5xl mb-3'>YouTube Video Converter</label>
+							<input
+								className='block border-2 p-2 w-full rounded-md mb-3'
+								type='text'
+								id='url'
+								name='url'
+								placeholder="Paste Your Link Here"
+							/>
+						</div>
+						<button
+							className='inline-flex items-center rounded-md border border-transparent 
+								bg-gray-600 px-4 py-2 text-base font-medium text-white shadow-sm
+								hover:bg-gray-700 focus:outline-none focus:ring-2
+								focus:ring-gray-500 focus:ring-offset-2' type='submit'
+						>
+						Download
+						</button>
+					</form>
+					<p>{status}</p>
+					{typeof data !== 'undefined' &&
+						<div>
+							<p>{data}</p>
+							<audio controls>
+								<source src={data} type='audio/x-wav'/>
+							</audio>
+						</div>
+					}
+
 				</div>
-				<button type="submit">Submit</button>
-			</form>
-			<p>{status}</p>
-			{/* <audio controls preload="auto">
-				<source src="http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3" type="audio/mp3"/>
-			</audio> */}
-			{typeof data !== 'undefined' &&
-				<div>
-					<p>{data}</p>
-					<audio controls>
-						<source src={data} type="audio/x-wav"/>
-					</audio>
-				</div>
-			}
+			</main>
 		</div>
 	)
 }
