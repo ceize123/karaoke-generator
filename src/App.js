@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import "./style/style.css";
-import Video from "./components/Video";
 
 // Call api download
 async function download(url) {
@@ -19,6 +18,7 @@ async function download(url) {
 
 // Call api spleet
 async function spleeter(res) {
+	// https://stackoverflow.com/questions/68230294/how-can-i-play-audio-file-sent-from-flask-send-file
 	const responseSpleeter = await fetch(
 		'/spleet',
 		{
@@ -68,7 +68,7 @@ function App() {
 			<form onSubmit={handleSubmit}>
 				<div>
 					<label htmlFor="url">URL:</label>
-					<input type="text" id="url" name="url" />
+					<input className='border-2' type="text" id="url" name="url" />
 				</div>
 				<button type="submit">Submit</button>
 			</form>
