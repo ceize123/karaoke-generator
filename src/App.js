@@ -1,5 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./style/style.css";
+// import { search, download, spleeter } from './components/apis';
+
+// Call api search
+async function search(url) {
+	const responseSearch = await fetch(
+		'/search',
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(url)
+		}
+	);
+	return await responseSearch.json() // Extracting data as a JSON Object from the response
+}
 
 // Call api download
 async function download(url) {
@@ -36,6 +52,9 @@ async function spleeter(res) {
 function App() {
 	const [status, setStatus] = useState('')
 	const [data, setData] = useState()
+	const [searchRes, setSearchRes] = useState([])
+	const [val, setVal] = useState('')
+	let isComposition = false
 
 	async function callAPI(url) {
 		setData()
@@ -63,6 +82,35 @@ function App() {
 		callAPI(e.target.url.value)
 	}
 
+	const handleChange = (e) => {
+		const inputVal = e.target.value
+		if (!isComposition && !inputVal.includes('https:')) {
+			setVal(e.target.value)
+		}
+	}
+
+	const handleComposition = (e) => {
+		if (e.type === 'compositionend') {
+			isComposition = false
+		if (!isComposition) {
+			handleChange(e)
+		}
+		} else {
+			isComposition = true
+		}
+	}
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const res = await search(val)
+			setSearchRes(res.videos)
+		}
+
+		if (val.length > 1) {
+			fetchData()
+		}
+	}, [val]);
+
 	return (
 		<div className='flex justify-center'>
 			<main className='container flex justify-center'>
@@ -75,7 +123,12 @@ function App() {
 								type='text'
 								id='url'
 								name='url'
-								placeholder="Paste Your Link Here"
+								placeholder='Paste Your Link Here'
+								// Handle chinese spelling issue
+								// https://juejin.cn/post/6861098174723915790
+								onCompositionStart={handleComposition}
+          						onCompositionEnd={handleComposition}
+								onChange={handleChange}
 							/>
 						</div>
 						<button
@@ -87,6 +140,17 @@ function App() {
 						Download
 						</button>
 					</form>
+					{searchRes && searchRes.map((item, idx) => {
+						return (
+							<div key={idx}>
+								<p>{item.title}</p>
+								<img
+									src={item.thumbnail}
+									alt={item.title} />
+							</div>
+						)
+
+					})}
 					<p>{status}</p>
 					{typeof data !== 'undefined' &&
 						<div>
