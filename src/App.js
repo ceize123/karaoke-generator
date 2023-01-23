@@ -1,53 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./style/style.css";
-// import { search, download, spleeter } from './components/apis';
-
-// Call api search
-async function search(url) {
-	const responseSearch = await fetch(
-		'/search',
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(url)
-		}
-	);
-	return await responseSearch.json() // Extracting data as a JSON Object from the response
-}
-
-// Call api download
-async function download(url) {
-	const responseDownload = await fetch(
-		'/download',
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(url)
-		}
-	);
-	return await responseDownload.json() // Extracting data as a JSON Object from the response
-}
-
-// Call api spleet
-async function spleeter(res) {
-	// https://stackoverflow.com/questions/68230294/how-can-i-play-audio-file-sent-from-flask-send-file
-	const responseSpleeter = await fetch(
-		'/spleet',
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(res),
-			responseType: "blob",
-		}
-	);
-	return await responseSpleeter.blob()
-}
+import { search, download, spleeter } from './components/apis';
 
 function App() {
 	const [status, setStatus] = useState('')
