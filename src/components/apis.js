@@ -1,7 +1,11 @@
+// https://stackoverflow.com/questions/42458434/how-to-set-build-env-variables-when-running-create-react-app-build-script
+const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : ''
+console.log(apiUrl)
+
 // Call api search
 export async function search(url) {
 	const responseSearch = await fetch(
-		'/search',
+		`${apiUrl}/search`,
 		{
 			method: 'POST',
 			headers: {
@@ -16,7 +20,7 @@ export async function search(url) {
 // Call api download
 export async function download(url) {
 	const responseDownload = await fetch(
-		'/download',
+		`${apiUrl}/download`,
 		{
 			method: 'POST',
 			headers: {
@@ -32,7 +36,7 @@ export async function download(url) {
 export async function spleeter(res) {
 	// https://stackoverflow.com/questions/68230294/how-can-i-play-audio-file-sent-from-flask-send-file
 	const responseSpleeter = await fetch(
-		'/spleet',
+		`${apiUrl}/spleet`,
 		{
 			method: 'POST',
 			headers: {
