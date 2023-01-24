@@ -8,6 +8,7 @@ export async function search(keyword) {
 		`${apiUrl}/search`,
 		{
 			method: 'POST',
+			mode: 'no-cors',
 			headers: {
 				'Content-Type': 'application/json',
 				'Access-Control-Allow-Headers': '*',
@@ -26,6 +27,7 @@ export async function download(url) {
 		`${apiUrl}/download`,
 		{
 			method: 'POST',
+			mode: 'no-cors',
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -42,6 +44,7 @@ export async function spleeter(res) {
 		`${apiUrl}/spleet`,
 		{
 			method: 'POST',
+			mode: 'no-cors',
 			headers: {
 				'Content-Type': 'application/json'
 			},
