@@ -3,15 +3,18 @@ const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PRO
 console.log(apiUrl)
 
 // Call api search
-export async function search(url) {
+export async function search(keyword) {
 	const responseSearch = await fetch(
-		`${apiUrl}/search/`,
+		`${apiUrl}/search`,
 		{
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Headers': '*',
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': '*'   
 			},
-			body: JSON.stringify(url)
+			body: JSON.stringify(keyword)
 		}
 	);
 	return await responseSearch.json() // Extracting data as a JSON Object from the response
