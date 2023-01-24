@@ -5,15 +5,15 @@ console.log(apiUrl)
 // Call api search
 export async function search(keyword) {
 	const responseSearch = await fetch(
-		`${apiUrl}/search`,
+		`https://karaoke-backend.vercel.app/search`,
 		{
 			method: 'POST',
-			mode: 'no-cors',
+			mode: 'cors',
 			headers: {
 				'Content-Type': 'application/json',
 				'Access-Control-Allow-Headers': '*',
 				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Methods': '*'   
+				'Access-Control-Allow-Methods': '*'
 			},
 			body: JSON.stringify(keyword)
 		}
@@ -27,7 +27,7 @@ export async function download(url) {
 		`${apiUrl}/download`,
 		{
 			method: 'POST',
-			mode: 'no-cors',
+			mode: 'cors',
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -44,7 +44,7 @@ export async function spleeter(res) {
 		`${apiUrl}/spleet`,
 		{
 			method: 'POST',
-			mode: 'no-cors',
+			mode: 'cors',
 			headers: {
 				'Content-Type': 'application/json'
 			},

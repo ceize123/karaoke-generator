@@ -17,7 +17,7 @@ function App() {
 		try {
 			responseDownload = await download(url)
 		} catch (e) {
-			setStatus('Duration is exceeded... Video must shorter than 10 mins.')
+			setStatus('Duration is exceeded... Video must shorter than 15 mins.')
 		}
 		
 		console.log(responseDownload)
