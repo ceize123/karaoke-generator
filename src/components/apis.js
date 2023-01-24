@@ -5,7 +5,7 @@ console.log(apiUrl)
 // Call api search
 export async function search(url) {
 	const responseSearch = await fetch(
-		`${apiUrl}/search`,
+		`${apiUrl}/search/`,
 		{
 			method: 'POST',
 			headers: {
