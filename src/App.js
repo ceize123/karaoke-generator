@@ -43,11 +43,12 @@ function App() {
 	}
 
 	const handleComposition = (e) => {
+		console.log(e.type)
 		if (e.type === 'compositionend') {
 			isComposition = false
-		if (!isComposition) {
-			handleChange(e)
-		}
+			if (!isComposition) {
+				handleChange(e)
+			}
 		} else {
 			isComposition = true
 		}
