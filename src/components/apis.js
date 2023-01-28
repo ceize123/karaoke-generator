@@ -3,6 +3,12 @@ const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PRO
 console.log(process.env.NODE_ENV)
 console.log(apiUrl)
 
+const headers = {
+	'Content-Type': 'application/json',
+	'Access-Control-Allow-Origin': process.env.REACT_APP_PROD_API_URL,
+	'Access-Control-Request-Headers': 'Content-Type, Authorization'
+}
+
 // Call api search
 export async function search(value, isUrl=false) {
 	const responseSearch = await fetch(
@@ -10,11 +16,7 @@ export async function search(value, isUrl=false) {
 		{
 			method: 'POST',
 			mode: 'cors',
-			headers: {
-				'Content-Type': 'application/json',
-				"Access-Control-Allow-Origin": 'https://flask-karaoke.onrender.com/',
-            	"Access-Control-Request-Headers": 'Content-Type, Authorization'
-			},
+			headers,
 			body: JSON.stringify({val: value, isUrl: isUrl})
 		}
 	);
@@ -28,11 +30,7 @@ export async function download(url) {
 		{
 			method: 'POST',
 			mode: 'cors',
-			headers: {
-				'Content-Type': 'application/json',
-				"Access-Control-Allow-Origin": 'https://flask-karaoke.onrender.com/',
-            	"Access-Control-Request-Headers": 'Content-Type, Authorization'
-			},
+			headers,
 			body: JSON.stringify(url)
 		}
 	);
@@ -47,13 +45,9 @@ export async function spleeter(res) {
 		{
 			method: 'POST',
 			mode: 'cors',
-			headers: {
-				'Content-Type': 'application/json',
-				"Access-Control-Allow-Origin": 'https://flask-karaoke.onrender.com/',
-            	"Access-Control-Request-Headers": 'Content-Type, Authorization'
-			},
+			headers,
 			body: JSON.stringify(res),
-			responseType: "blob",
+			responseType: 'blob',
 		}
 	);
 	return await responseSpleeter.blob()

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import "./style/style.css";
+import React, { useState, useEffect } from 'react';
+import './style/style.css';
 import { search, download, spleeter } from './components/apis';
+import {SearchSec, SearchSecSingle} from './components/Search-Sec';
 
 function isValidHttpUrl(string) {
 	let url;
@@ -16,8 +17,7 @@ function App() {
 	const [status, setStatus] = useState('')
 	const [data, setData] = useState()
 	const [searchRes, setSearchRes] = useState([])
-	// const [val, setVal] = useState('')
-	// let isComposition = false
+	const [downloading, setDownloading] = useState(false)
 
 	const handleDownload = async (url) => {
 		setData()
@@ -51,100 +51,59 @@ function App() {
 			setSearchRes(res.video)
 			console.log(res.video)
 		}
-
-		// callAPI(e.target.url.value)
 	}
 
-	// const handleChange = (e) => {
-	// 	const inputVal = e.target.value
-	// 	if (!isComposition && !inputVal.includes('https:')) {
-	// 		setVal(e.target.value)
-	// 	}
-	// }
+	const onHandleChange = (res) => {
+		setSearchRes(res)
+	}
 
-	// const handleComposition = (e) => {
-	// 	console.log(e.type)
-	// 	if (e.type === 'compositionend') {
-	// 		isComposition = false
-	// 		if (!isComposition) {
-	// 			handleChange(e)
-	// 		}
-	// 	} else {
-	// 		isComposition = true
-	// 	}
-	// }
-
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const res = await search(val)
-	// 		setSearchRes(res.videos)
-	// 	}
-
-	// 	if (val.length > 1) {
-	// 		fetchData()
-	// 	}
-	// }, [val]);
+	const onHandleDownload = (res) => {
+		setDownloading(res)
+		handleDownload(searchRes.url)
+	}
 
 	return (
-		<div className='flex justify-center'>
-			<main className='container flex justify-center'>
-				<div className='mt-10'>
-					<form onSubmit={handleSubmit} className='text-center'>
-						<div>
-							<label htmlFor='val' className='block text-5xl mb-3'>YouTube Video Converter</label>
-							<input
-								className='block border-2 p-2 w-full rounded-md mb-3'
-								type='text'
-								id='val'
-								name='val'
-								placeholder='Paste Your Link Here'
-								// Handle chinese spelling issue
-								// https://juejin.cn/post/6861098174723915790
-								// onCompositionStart={handleComposition}
-          						// onCompositionEnd={handleComposition}
-								// onChange={handleChange}
-							/>
-						</div>
-						<button
-							className='inline-flex items-center rounded-md border border-transparent 
-								bg-gray-600 px-4 py-2 text-base font-medium text-white shadow-sm
-								hover:bg-gray-700 focus:outline-none focus:ring-2
-								focus:ring-gray-500 focus:ring-offset-2' type='submit'
-						>
-						Search
-						</button>
-					</form>
-					{searchRes && searchRes.length > 1
-						? searchRes.map((item, idx) => {
-						return (
-							<div key={idx}>
-								<p>{item.title}</p>
-								<img
-									src={item.thumbnail}
-									alt={item.title} />
-							</div>
-						)}) 
-						: <div>
-							<p onClick={() => handleDownload(searchRes.url)}>{searchRes.title}</p>
-							<p>{searchRes.duration}</p>
-							<img
-								src={searchRes.thumbnail}
-								alt={searchRes.title} />
-						</div>
-					}
-					<p>{status}</p>
-					{typeof data !== 'undefined' &&
-						<div>
-							<p>{data}</p>
-							<audio controls>
-								<source src={data} type='audio/x-wav'/>
-							</audio>
-						</div>
-					}
-
-				</div>
-			</main>
-		</div>
+		<main className='container max-w-7xl mx-auto flex items-center flex-col'>
+			<section className='mt-10 max-w-5xl w-1/2'>
+				<form onSubmit={handleSubmit} className='text-center'>
+					<div>
+						<label htmlFor='val' className='block text-5xl mb-3'>YouTube Video Converter</label>
+						<input
+							className='block border-2 p-2 w-full rounded-md mb-3'
+							type='text'
+							id='val'
+							name='val'
+							placeholder='Paste Your Link Here'
+						/>
+					</div>
+					<button
+						className='inline-flex items-center rounded-md border border-transparent 
+							bg-gray-600 px-4 py-2 text-base font-medium text-white shadow-sm
+							hover:bg-gray-700 focus:outline-none focus:ring-2
+							focus:ring-gray-500 focus:ring-offset-2' type='submit'
+					>
+					Search
+					</button>
+				</form>
+			</section>
+			<section className='w-full flex justify-center my-8'>
+				{searchRes && searchRes.length > 1
+					? <SearchSec res={searchRes} onHandleChange={onHandleChange} />
+					: <SearchSecSingle res={searchRes} onHandleChange={onHandleDownload} />
+				}
+			</section>
+			<section>
+				<p>{status}</p>
+				{typeof data !== 'undefined' &&
+					<div>
+						<p>{data}</p>
+						<audio controls>
+							<source src={data} type='audio/x-wav'/>
+						</audio>
+					</div>
+				}
+			</section>
+		</main>
 	)
 }
 
