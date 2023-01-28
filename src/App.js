@@ -16,7 +16,7 @@ function isValidHttpUrl(string) {
 function App() {
 	const [status, setStatus] = useState('')
 	const [data, setData] = useState()
-	const [searchRes, setSearchRes] = useState([])
+	const [searchRes, setSearchRes] = useState()
 	const [downloading, setDownloading] = useState(false)
 
 	const handleDownload = async (url) => {
@@ -86,12 +86,12 @@ function App() {
 					</button>
 				</form>
 			</section>
-			<section className='w-full flex justify-center my-8'>
-				{searchRes && searchRes.length > 1
+			{searchRes && <section className='w-full flex justify-center my-8'>
+				{searchRes.length > 1
 					? <SearchSec res={searchRes} onHandleChange={onHandleChange} />
 					: <SearchSecSingle res={searchRes} onHandleChange={onHandleDownload} />
 				}
-			</section>
+			</section>}
 			<section>
 				<p>{status}</p>
 				{typeof data !== 'undefined' &&
