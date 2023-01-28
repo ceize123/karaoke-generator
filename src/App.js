@@ -1,15 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import "./style/style.css";
 import { search, download, spleeter } from './components/apis';
+
+function isValidHttpUrl(string) {
+	let url;
+	try {
+		url = new URL(string);
+	} catch (_) {
+		return false;
+	}
+	return url.protocol === "http:" || url.protocol === "https:";
+}
 
 function App() {
 	const [status, setStatus] = useState('')
 	const [data, setData] = useState()
 	const [searchRes, setSearchRes] = useState([])
-	const [val, setVal] = useState('')
-	let isComposition = false
+	// const [val, setVal] = useState('')
+	// let isComposition = false
 
-	async function callAPI(url) {
+	const handleDownload = async (url) => {
 		setData()
 		setStatus('Downloading...')
 		
@@ -21,7 +31,6 @@ function App() {
 		}
 		
 		console.log(responseDownload)
-
 		setStatus('Spleeting...')
 		const responseSpleeter = await spleeter(responseDownload)
 		
@@ -30,40 +39,51 @@ function App() {
 		setData(URL.createObjectURL(responseSpleeter))
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault()
-		callAPI(e.target.url.value)
-	}
-
-	const handleChange = (e) => {
-		const inputVal = e.target.value
-		if (!isComposition && !inputVal.includes('https:')) {
-			setVal(e.target.value)
-		}
-	}
-
-	const handleComposition = (e) => {
-		console.log(e.type)
-		if (e.type === 'compositionend') {
-			isComposition = false
-			if (!isComposition) {
-				handleChange(e)
-			}
-		} else {
-			isComposition = true
-		}
-	}
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const res = await search(val)
+		const inputVal = e.target.val.value
+		console.log(inputVal)
+		if (!isValidHttpUrl(inputVal)) {
+			const res = await search(inputVal)
 			setSearchRes(res.videos)
+		} else {
+			const res = await search(inputVal, true)
+			setSearchRes(res.video)
+			console.log(res.video)
 		}
 
-		if (val.length > 1) {
-			fetchData()
-		}
-	}, [val]);
+		// callAPI(e.target.url.value)
+	}
+
+	// const handleChange = (e) => {
+	// 	const inputVal = e.target.value
+	// 	if (!isComposition && !inputVal.includes('https:')) {
+	// 		setVal(e.target.value)
+	// 	}
+	// }
+
+	// const handleComposition = (e) => {
+	// 	console.log(e.type)
+	// 	if (e.type === 'compositionend') {
+	// 		isComposition = false
+	// 		if (!isComposition) {
+	// 			handleChange(e)
+	// 		}
+	// 	} else {
+	// 		isComposition = true
+	// 	}
+	// }
+
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		const res = await search(val)
+	// 		setSearchRes(res.videos)
+	// 	}
+
+	// 	if (val.length > 1) {
+	// 		fetchData()
+	// 	}
+	// }, [val]);
 
 	return (
 		<div className='flex justify-center'>
@@ -71,18 +91,18 @@ function App() {
 				<div className='mt-10'>
 					<form onSubmit={handleSubmit} className='text-center'>
 						<div>
-							<label htmlFor='url' className='block text-5xl mb-3'>YouTube Video Converter</label>
+							<label htmlFor='val' className='block text-5xl mb-3'>YouTube Video Converter</label>
 							<input
 								className='block border-2 p-2 w-full rounded-md mb-3'
 								type='text'
-								id='url'
-								name='url'
+								id='val'
+								name='val'
 								placeholder='Paste Your Link Here'
 								// Handle chinese spelling issue
 								// https://juejin.cn/post/6861098174723915790
-								onCompositionStart={handleComposition}
-          						onCompositionEnd={handleComposition}
-								onChange={handleChange}
+								// onCompositionStart={handleComposition}
+          						// onCompositionEnd={handleComposition}
+								// onChange={handleChange}
 							/>
 						</div>
 						<button
@@ -91,10 +111,11 @@ function App() {
 								hover:bg-gray-700 focus:outline-none focus:ring-2
 								focus:ring-gray-500 focus:ring-offset-2' type='submit'
 						>
-						Download
+						Search
 						</button>
 					</form>
-					{searchRes && searchRes.map((item, idx) => {
+					{searchRes && searchRes.length > 1
+						? searchRes.map((item, idx) => {
 						return (
 							<div key={idx}>
 								<p>{item.title}</p>
@@ -102,9 +123,15 @@ function App() {
 									src={item.thumbnail}
 									alt={item.title} />
 							</div>
-						)
-
-					})}
+						)}) 
+						: <div>
+							<p onClick={() => handleDownload(searchRes.url)}>{searchRes.title}</p>
+							<p>{searchRes.duration}</p>
+							<img
+								src={searchRes.thumbnail}
+								alt={searchRes.title} />
+						</div>
+					}
 					<p>{status}</p>
 					{typeof data !== 'undefined' &&
 						<div>
