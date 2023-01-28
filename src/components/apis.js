@@ -6,7 +6,7 @@ console.log(apiUrl)
 // Call api search
 export async function search(keyword) {
 	const responseSearch = await fetch(
-		`https://flask-karaoke.onrender.com/api/search`,
+		`${apiUrl}/api/search`,
 		{
 			method: 'POST',
 			mode: 'cors',
@@ -24,7 +24,7 @@ export async function search(keyword) {
 // Call api download
 export async function download(url) {
 	const responseDownload = await fetch(
-		`https://flask-karaoke.onrender.com/api/download`,
+		`${apiUrl}/api/download`,
 		{
 			method: 'POST',
 			mode: 'cors',
@@ -43,7 +43,7 @@ export async function download(url) {
 export async function spleeter(res) {
 	// https://stackoverflow.com/questions/68230294/how-can-i-play-audio-file-sent-from-flask-send-file
 	const responseSpleeter = await fetch(
-		`https://flask-karaoke.onrender.com/api/spleet`,
+		`${apiUrl}/api/spleet`,
 		{
 			method: 'POST',
 			mode: 'cors',
