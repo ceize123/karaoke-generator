@@ -4,7 +4,7 @@ console.log(process.env.NODE_ENV)
 console.log(apiUrl)
 
 // Call api search
-export async function search(keyword) {
+export async function search(value, isUrl=false) {
 	const responseSearch = await fetch(
 		`${apiUrl}/api/search`,
 		{
@@ -15,7 +15,7 @@ export async function search(keyword) {
 				"Access-Control-Allow-Origin": 'https://flask-karaoke.onrender.com/',
             	"Access-Control-Request-Headers": 'Content-Type, Authorization'
 			},
-			body: JSON.stringify(keyword)
+			body: JSON.stringify({val: value, isUrl: isUrl})
 		}
 	);
 	return await responseSearch.json() // Extracting data as a JSON Object from the response
