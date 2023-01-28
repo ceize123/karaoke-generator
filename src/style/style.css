@@ -1,5 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.img-container {
+  height: 0;
+  padding-bottom: 80%;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+}
 
 /*# sourceMappingURL=style.css.map */
