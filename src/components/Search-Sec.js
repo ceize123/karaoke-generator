@@ -1,6 +1,7 @@
 import Button from './Button';
 
 export function SearchSec({ res, onHandleChange }) {
+	console.log(res)
 	return (
 		<div className='grid grid-cols-3 gap-x-8 gap-y-12 mx-20'>
 			{res.map((item, idx) => {
@@ -26,11 +27,12 @@ export function SearchSec({ res, onHandleChange }) {
 }
 
 export function SearchSecSingle({ res, onHandleChange }) {
-	const { title, duration, thumbnail } = res
+	const { id, title, duration, thumbnail } = res
 
 	return (
 		<div className='w-3/5 grid grid-cols-6 items-center'>
 			<div className='col-span-2'>
+				<h2>{id}</h2>
 				<h2>{title}</h2>
 				<p>{duration}</p>
 				<Button content={'true'} onHandleChange={onHandleChange} />

@@ -19,20 +19,20 @@ function App() {
 	const [searchRes, setSearchRes] = useState()
 	const [downloading, setDownloading] = useState(false)
 
-	const handleDownload = async (url) => {
+	const handleDownload = async (url, id) => {
 		setData()
 		setStatus('Downloading...')
 		
 		let responseDownload
 		try {
-			responseDownload = await download(url)
+			responseDownload = await download(url, id)
 		} catch (e) {
 			setStatus('Duration is exceeded... Video must shorter than 15 mins.')
 		}
 		
 		console.log(responseDownload)
 		setStatus('Spleeting...')
-		const responseSpleeter = await spleeter(responseDownload)
+		const responseSpleeter = await spleeter(searchRes.id, searchRes.title)
 		
 		setStatus('Success!')
 		console.log(responseSpleeter)
