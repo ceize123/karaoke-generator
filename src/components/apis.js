@@ -1,7 +1,9 @@
 // https://stackoverflow.com/questions/42458434/how-to-set-build-env-variables-when-running-create-react-app-build-script
-const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : ''
-console.log(process.env.NODE_ENV)
-console.log(apiUrl)
+// const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : ''
+// console.log(process.env.NODE_ENV)
+// console.log(apiUrl)
+
+const apiUrl = process.env.REACT_APP_PROD_API_URL
 
 const headers = {
 	'Content-Type': 'application/json',
@@ -25,6 +27,7 @@ export async function search(value, isUrl=false) {
 
 // Call api download
 export async function download(url) {
+	console.log(apiUrl)
 	console.log(url)
 	const responseDownload = await fetch(
 		`${apiUrl}/api/downloadUrl`,
@@ -32,7 +35,7 @@ export async function download(url) {
 			method: 'POST',
 			mode: 'cors',
 			headers,
-			body: JSON.stringify(url)
+			body: JSON.stringify({url: url})
 		}
 	);
 	return await responseDownload.json() // Extracting data as a JSON Object from the response
