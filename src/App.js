@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './style/style.css';
 import { search, download, spleeter } from './components/apis';
 import {SearchSec, SearchSecSingle} from './components/Search-Sec';
+import { v4 as uuidv4 } from 'uuid';
 
 function isValidHttpUrl(string) {
 	let url;
@@ -38,7 +39,6 @@ function App() {
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		const inputVal = e.target.val.value
-		console.log(inputVal)
 		if (!isValidHttpUrl(inputVal)) {
 			const res = await search(inputVal)
 			setSearchRes(res.videos)
@@ -51,6 +51,8 @@ function App() {
 
 	const onHandleChange = (res) => {
 		setSearchRes(res)
+		// const result = {'result': res};
+		// sessionStorage.setItem('result', JSON.stringify(result));
 	}
 
 	const onHandleDownload = (res) => {
@@ -58,6 +60,20 @@ function App() {
 		console.log(searchRes)
 		handleDownload()
 	}
+
+	// Create uuid
+	useEffect(() => {
+		// console.log(sessionStorage.result)
+		if (sessionStorage.uid === undefined) {
+			const uid = {'uid': uuidv4()};
+			sessionStorage.setItem('uid', JSON.stringify(uid));
+		}
+		const intervalId = setInterval(() => {
+			const obj = JSON.parse(sessionStorage.uid);
+			console.log(obj)
+		}, 5000)
+		return () => clearInterval(intervalId)
+	}, [])
 
 	return (
 		<main className='container max-w-7xl mx-auto flex items-center flex-col'>
