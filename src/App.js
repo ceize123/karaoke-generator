@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './style/style.css';
-import { callSearchAPI, callDownloadAPI, callSpleeterAPI } from './components/apis';
+import { callSearchAPI, callDownloadAPI, callAddTaskAPI } from './components/apis';
 import {SearchSec, SearchSecSingle} from './components/Search-Sec';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,6 +21,8 @@ function App() {
 	const [downloading, setDownloading] = useState(false)
 	const [error, setError] = useState(false)
 
+	const session = useRef()
+
 	const download = async () => {
 		setData()
 		setStatus('Downloading...')
@@ -37,7 +39,7 @@ function App() {
 	const addToTask = async () => {
 		setStatus('Spleeting...')
 		try {
-			const responseSpleeter = await callSpleeterAPI(searchRes.id, searchRes.title)
+			const responseSpleeter = await callAddTaskAPI(session.current['uid'], searchRes.id, searchRes.title)
 			setStatus('Success!')
 			console.log(responseSpleeter)
 			setData(URL.createObjectURL(responseSpleeter))
@@ -48,6 +50,7 @@ function App() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
+		console.log(session.current)
 		setError(false)
 		const inputVal = e.target.val.value
 		if (!isValidHttpUrl(inputVal)) {
@@ -88,11 +91,13 @@ function App() {
 			const uid = {'uid': uuidv4()};
 			sessionStorage.setItem('uid', JSON.stringify(uid));
 		}
-		const intervalId = setInterval(() => {
-			const obj = JSON.parse(sessionStorage.uid);
-			console.log(obj)
-		}, 5000)
-		return () => clearInterval(intervalId)
+
+		session.current = JSON.parse(sessionStorage.uid)
+		// const intervalId = setInterval(() => {
+		// 	const obj = JSON.parse(sessionStorage.uid);
+		// 	console.log(obj)
+		// }, 5000)
+		// return () => clearInterval(intervalId)
 	}, [])
 
 	return (
