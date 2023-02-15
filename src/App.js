@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './style/style.css';
-import { search, download, spleeter } from './components/apis';
+import { callSearchAPI, callDownloadAPI, callSpleeterAPI } from './components/apis';
 import {SearchSec, SearchSecSingle} from './components/Search-Sec';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -19,33 +19,53 @@ function App() {
 	const [data, setData] = useState()
 	const [searchRes, setSearchRes] = useState()
 	const [downloading, setDownloading] = useState(false)
+	const [error, setError] = useState(false)
 
-	const handleDownload = async () => {
+	const download = async () => {
 		setData()
 		setStatus('Downloading...')
 		
-		const responseDownload = await download(searchRes.url)
-		
-		
-		console.log(responseDownload)
+		try {
+			const responseDownload = await callDownloadAPI(searchRes.url)
+			console.log(responseDownload)
+			addToTask()
+		} catch  {
+			setError(true)
+		}
+	}
+
+	const addToTask = async () => {
 		setStatus('Spleeting...')
-		const responseSpleeter = await spleeter(searchRes.id, searchRes.title)
-		
-		setStatus('Success!')
-		console.log(responseSpleeter)
-		setData(URL.createObjectURL(responseSpleeter))
+		try {
+			const responseSpleeter = await callSpleeterAPI(searchRes.id, searchRes.title)
+			setStatus('Success!')
+			console.log(responseSpleeter)
+			setData(URL.createObjectURL(responseSpleeter))
+		} catch {
+			setError(true)
+		}
 	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
+		setError(false)
 		const inputVal = e.target.val.value
 		if (!isValidHttpUrl(inputVal)) {
-			const res = await search(inputVal)
-			setSearchRes(res.videos)
+			try {
+				const res = await callSearchAPI(inputVal)
+				setSearchRes(res.videos)
+			} catch {
+				setError(true)
+			}
 		} else {
-			const res = await search(inputVal, true)
-			setSearchRes(res.video)
-			console.log(res.video)
+			try {
+				const res = await callSearchAPI(inputVal, true)
+				console.log(res)
+			} catch {
+				setError(true)
+			}
+			// setSearchRes(res.video)
+			// console.log(res.video)
 		}
 	}
 
@@ -58,7 +78,7 @@ function App() {
 	const onHandleDownload = (res) => {
 		setDownloading(res)
 		console.log(searchRes)
-		handleDownload()
+		download()
 	}
 
 	// Create uuid
@@ -116,6 +136,7 @@ function App() {
 					</div>
 				}
 			</section>
+			{error && <p>Something went wrong...</p>}
 		</main>
 	)
 }

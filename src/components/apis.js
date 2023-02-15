@@ -10,7 +10,7 @@ const headers = {
 }
 
 // Call api search
-export async function search(value, isUrl=false) {
+export async function callSearchAPI(value, isUrl = false) {
 	const responseSearch = await fetch(
 		`${apiUrl}/api/search`,
 		{
@@ -19,12 +19,12 @@ export async function search(value, isUrl=false) {
 			headers,
 			body: JSON.stringify({val: value, isUrl: isUrl})
 		}
-	);
-	return await responseSearch.json() // Extracting data as a JSON Object from the response
+	)
+	return responseSearch.json() // Extracting data as a JSON Object from the response
 }
 
 // Call api download
-export async function download(url) {
+export async function callDownloadAPI(url) {
 	console.log(apiUrl)
 	console.log(url)
 	const responseDownload = await fetch(
@@ -40,7 +40,7 @@ export async function download(url) {
 }
 
 // Call api spleet
-export async function spleeter(id, title) {
+export async function callSpleeterAPI(id, title) {
 	// https://stackoverflow.com/questions/68230294/how-can-i-play-audio-file-sent-from-flask-send-file
 	const responseSpleeter = await fetch(
 		`${apiUrl}/api/spleet`,
