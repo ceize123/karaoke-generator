@@ -20,7 +20,7 @@ function App() {
 	const [searchRes, setSearchRes] = useState()
 	const [downloading, setDownloading] = useState(false)
 
-	const handleDownload = async () => {
+	const download = async () => {
 		setData()
 		setStatus('Downloading...')
 		
@@ -58,7 +58,7 @@ function App() {
 	const onHandleDownload = (res) => {
 		setDownloading(res)
 		console.log(searchRes)
-		handleDownload()
+		download()
 	}
 
 	// Create uuid
