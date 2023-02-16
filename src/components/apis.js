@@ -1,6 +1,7 @@
 // https://stackoverflow.com/questions/42458434/how-to-set-build-env-variables-when-running-create-react-app-build-script
 const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : ''
 console.log(process.env.NODE_ENV)
+// const apiUrl = process.env.REACT_APP_PROD_API_URL
 console.log(apiUrl)
 
 const headers = {
