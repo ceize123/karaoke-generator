@@ -54,3 +54,16 @@ export async function callAddTaskAPI(uid, id, title) {
 	);
 	return await responseSpleeter.blob()
 }
+
+export async function callUnloadAPI(uid) {
+	const response = await fetch(
+		`${apiUrl}/api/unload`,
+		{
+			method: 'POST',
+			mode: 'cors',
+			headers,
+			body: JSON.stringify({ uid: uid }),
+		}
+	);
+	return await response.json()
+}

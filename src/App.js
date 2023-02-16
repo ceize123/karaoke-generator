@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './style/style.css';
-import { callSearchAPI, callDownloadAPI, callAddTaskAPI } from './components/apis';
+import { callSearchAPI, callDownloadAPI, callAddTaskAPI, callUnloadAPI } from './components/apis';
 import {SearchSec, SearchSecSingle} from './components/Search-Sec';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -20,11 +20,11 @@ function App() {
 	const [searchRes, setSearchRes] = useState()
 	const [downloading, setDownloading] = useState(false)
 	const [error, setError] = useState(false)
-
-	const session = useRef()
+	const uid = uuidv4()
 
 	const download = async () => {
 		setData()
+		setError(false)
 		setStatus('Downloading...')
 		
 		try {
@@ -39,18 +39,19 @@ function App() {
 	const addToTask = async () => {
 		setStatus('Spleeting...')
 		try {
-			const responseSpleeter = await callAddTaskAPI(session.current['uid'], searchRes.id, searchRes.title)
+			handleSession(true)
+			const responseSpleeter = await callAddTaskAPI(JSON.parse(sessionStorage.entries)['uid'], searchRes.id, searchRes.title)
 			setStatus('Success!')
 			console.log(responseSpleeter)
 			setData(URL.createObjectURL(responseSpleeter))
 		} catch {
 			setError(true)
 		}
+		handleSession(false)
 	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
-		console.log(session.current)
 		setError(false)
 		const inputVal = e.target.val.value
 		if (!isValidHttpUrl(inputVal)) {
@@ -84,21 +85,34 @@ function App() {
 		download()
 	}
 
+	const handleSession = (active) => {
+		const entries = { 'uid': uid, 'active': active }
+		sessionStorage.setItem('entries', JSON.stringify(entries))
+	}
+
 	// Create uuid
 	useEffect(() => {
+		
 		// console.log(sessionStorage.result)
-		if (sessionStorage.uid === undefined) {
-			const uid = {'uid': uuidv4()};
-			sessionStorage.setItem('uid', JSON.stringify(uid));
+		if (sessionStorage.entries === undefined) {
+			handleSession(false)
 		}
 
-		session.current = JSON.parse(sessionStorage.uid)
-		// const intervalId = setInterval(() => {
-		// 	const obj = JSON.parse(sessionStorage.uid);
-		// 	console.log(obj)
-		// }, 5000)
-		// return () => clearInterval(intervalId)
-	}, [])
+		const intervalId = setInterval(() => {
+			const obj = JSON.parse(sessionStorage.entries)
+			console.log(obj)
+		}, 5000)
+		return () => clearInterval(intervalId)
+	})
+
+	window.addEventListener('beforeunload', () => {
+		const obj = JSON.parse(sessionStorage.entries)
+		if (obj['active']) {
+			callUnloadAPI(obj['uid'])
+			handleSession(false)
+			console.log('API call before page reload')
+		}
+	});
 
 	return (
 		<main className='container max-w-7xl mx-auto flex items-center flex-col'>
