@@ -1,11 +1,11 @@
-import http from '../http-common';
+import http from '../http-common'
 
 class MusicDataService {
 	// Call api search
-  search(data) {
-    return http.post('/api/search', data);
+	search(data) {
+		return http.post('/api/search', data)
 	}
-	
+
 	// Call api download
 	download(url) {
 		return http.post('/api/downloadURL', url)
@@ -13,10 +13,7 @@ class MusicDataService {
 
 	// Call api spleet task
 	generate(data) {
-		return http.post('/api/addTask',
-			data,
-			{responseType: 'blob'}
-		)
+		return http.post('/api/addTask', data, { responseType: 'blob' })
 	}
 
 	// Call api unload
@@ -25,8 +22,7 @@ class MusicDataService {
 	}
 }
 
-export default new MusicDataService();
-
+export default new MusicDataService()
 
 // Call api search
 // export async function callSearchAPI(value, isUrl = false) {
