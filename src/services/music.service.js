@@ -1,25 +1,25 @@
 import http from '../http-common'
 
 class MusicDataService {
-	// Call api search
-	search(data) {
-		return http.post('/api/search', data)
-	}
+  // Call api search
+  search(data) {
+    return http.post('/api/search', data)
+  }
 
-	// Call api download
-	download(url) {
-		return http.post('/api/downloadURL', url)
-	}
+  // Call api download
+  download(url) {
+    return http.post('/api/downloadURL', url)
+  }
 
-	// Call api spleet task
-	generate(data) {
-		return http.post('/api/addTask', data, { responseType: 'blob' })
-	}
+  // Call api spleet task
+  generate(data) {
+    return http.post('/api/addTask', data, { responseType: 'blob' })
+  }
 
-	// Call api unload
-	unload(uid) {
-		return http.get(`/api/unload/${uid}`)
-	}
+  // Call api unload
+  unload(uid) {
+    return http.get(`/api/unload/${uid}`)
+  }
 }
 
 export default new MusicDataService()
