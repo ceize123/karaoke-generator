@@ -1,5 +1,8 @@
-import axios from 'axios';
-const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : ''
+import axios from 'axios'
+const apiUrl =
+	process.env.NODE_ENV === 'production'
+		? process.env.REACT_APP_PROD_API_URL
+		: ''
 
 const headers = {
 	'Content-Type': 'application/json',
@@ -9,7 +12,6 @@ const headers = {
 
 export default axios.create({
 	baseURL: apiUrl,
-  headers,
+	headers,
 	mode: 'no-cors',
-});
-
+})
