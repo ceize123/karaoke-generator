@@ -40,17 +40,30 @@ export async function callDownloadAPI(url) {
 }
 
 // Call api spleet
-export async function callSpleeterAPI(id, title) {
+export async function callAddTaskAPI(uid, id, title) {
 	// https://stackoverflow.com/questions/68230294/how-can-i-play-audio-file-sent-from-flask-send-file
 	const responseSpleeter = await fetch(
-		`${apiUrl}/api/spleet`,
+		`${apiUrl}/api/addTask`,
 		{
 			method: 'POST',
 			mode: 'cors',
 			headers,
-			body: JSON.stringify({id: id, title: title}),
+			body: JSON.stringify({uid: uid, video_id: id, video_title: title}),
 			responseType: 'blob',
 		}
 	);
 	return await responseSpleeter.blob()
+}
+
+export async function callUnloadAPI(uid) {
+	const response = await fetch(
+		`${apiUrl}/api/unload`,
+		{
+			method: 'POST',
+			mode: 'cors',
+			headers,
+			body: JSON.stringify({ uid: uid }),
+		}
+	);
+	return await response.json()
 }
