@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style/style.css';
 import { callSearchAPI, callDownloadAPI, callAddTaskAPI, callUnloadAPI } from './components/apis';
 import {SearchSec, SearchSecSingle} from './components/Search-Sec';
@@ -54,22 +54,18 @@ function App() {
 		e.preventDefault()
 		setError(false)
 		const inputVal = e.target.val.value
-		if (!isValidHttpUrl(inputVal)) {
-			try {
+		console.log(inputVal)
+		try {
+			if (!isValidHttpUrl(inputVal)) {
 				const res = await callSearchAPI(inputVal)
 				setSearchRes(res.videos)
-			} catch {
-				setError(true)
-			}
-		} else {
-			try {
+			} else {
 				const res = await callSearchAPI(inputVal, true)
 				console.log(res)
-			} catch {
-				setError(true)
 			}
-			// setSearchRes(res.video)
-			// console.log(res.video)
+		} catch (e) {
+			console.log(e)
+			setError(true)
 		}
 	}
 
@@ -93,16 +89,15 @@ function App() {
 	// Create uuid
 	useEffect(() => {
 		
-		// console.log(sessionStorage.result)
 		if (sessionStorage.entries === undefined) {
 			handleSession(false)
 		}
 
-		const intervalId = setInterval(() => {
-			const obj = JSON.parse(sessionStorage.entries)
-			console.log(obj)
-		}, 5000)
-		return () => clearInterval(intervalId)
+		// const intervalId = setInterval(() => {
+		// 	const obj = JSON.parse(sessionStorage.entries)
+		// 	console.log(obj)
+		// }, 5000)
+		// return () => clearInterval(intervalId)
 	})
 
 	window.addEventListener('beforeunload', () => {
