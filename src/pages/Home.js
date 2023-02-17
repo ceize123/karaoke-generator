@@ -53,7 +53,7 @@ function Home() {
   const addToTask = async () => {
     setStatus('Spleeting...')
     const data = {
-      uid: JSON.parse(sessionStorage.entries)['uid'],
+      uid: JSON.parse(sessionStorage.uid)['uid'],
       video_id: searchRes[0].id,
       video_title: searchRes[0].title,
     }
@@ -87,7 +87,6 @@ function Home() {
     }
 
     try {
-      setActive(true)
       const res = await MusicDataService.search(data)
       setSearchRes(res.data.videos)
     } catch {
@@ -119,15 +118,16 @@ function Home() {
       const uid = { uid: uuidv4() }
       sessionStorage.setItem('uid', JSON.stringify(uid))
     }
-    const intervalId = setInterval(() => {
-      const obj = JSON.parse(sessionStorage.uid)
-      console.log(obj)
-    }, 5000)
-    return () => clearInterval(intervalId)
-  })
+    setActive(false)
+    // const intervalId = setInterval(() => {
+    //   const obj = JSON.parse(sessionStorage.uid)
+    //   console.log(obj)
+    // }, 5000)
+    // return () => clearInterval(intervalId)
+  }, [])
 
   window.addEventListener('beforeunload', () => {
-    const ses = JSON.parse(sessionStorage.entries)
+    const ses = JSON.parse(sessionStorage.uid)
     console.log(active)
     if (active) {
       MusicDataService.unload(ses['uid'])
@@ -135,57 +135,59 @@ function Home() {
   })
 
   return (
-    <main className='container max-w-7xl mx-auto flex items-center flex-col'>
-      <section className='mt-10 max-w-5xl w-1/2'>
-        <form onSubmit={handleSubmit} className='text-center'>
-          <div>
-            <label htmlFor='val' className='block text-5xl mb-3'>
-              YouTube Video Converter
-            </label>
-            <input
-              className='block border-2 p-2 w-full rounded-md mb-3'
-              type='text'
-              id='val'
-              name='val'
-              placeholder='Paste Your Link Here'
-            />
-          </div>
-          <button
-            className='inline-flex items-center rounded-md border border-transparent 
+    <div className='container max-w-7xl mx-auto'>
+      <main className=' flex items-center flex-col'>
+        <section className='mt-10 max-w-5xl w-1/2'>
+          <form onSubmit={handleSubmit} className='text-center'>
+            <div>
+              <label htmlFor='val' className='block text-5xl mb-3'>
+                YouTube Video Converter
+              </label>
+              <input
+                className='block border-2 p-2 w-full rounded-md mb-3'
+                type='text'
+                id='val'
+                name='val'
+                placeholder='Paste Your Link Here'
+              />
+            </div>
+            <button
+              className='inline-flex items-center rounded-md border border-transparent 
                             bg-gray-600 px-4 py-2 text-base font-medium text-white shadow-sm
                             hover:bg-gray-700 focus:outline-none focus:ring-2
                             focus:ring-gray-500 focus:ring-offset-2'
-            type='submit'
-          >
-            Search
-          </button>
-        </form>
-      </section>
-      {searchRes && (
-        <section className='w-full flex justify-center my-8'>
-          {searchRes.length === 1 ? (
-            <SearchSecSingle
-              res={searchRes[0]}
-              onHandleChange={onHandleDownload}
-            />
-          ) : (
-            <SearchSec res={searchRes} onHandleChange={onHandleChange} />
+              type='submit'
+            >
+              Search
+            </button>
+          </form>
+        </section>
+        {searchRes && (
+          <section className='w-full flex justify-center my-8'>
+            {searchRes.length === 1 ? (
+              <SearchSecSingle
+                res={searchRes[0]}
+                onHandleChange={onHandleDownload}
+              />
+            ) : (
+              <SearchSec res={searchRes} onHandleChange={onHandleChange} />
+            )}
+          </section>
+        )}
+        <section>
+          <p>{status}</p>
+          {typeof data !== 'undefined' && (
+            <div>
+              <p>{data}</p>
+              <audio controls>
+                <source src={data} type='audio/x-wav' />
+              </audio>
+            </div>
           )}
         </section>
-      )}
-      <section>
-        <p>{status}</p>
-        {typeof data !== 'undefined' && (
-          <div>
-            <p>{data}</p>
-            <audio controls>
-              <source src={data} type='audio/x-wav' />
-            </audio>
-          </div>
-        )}
-      </section>
-      {error && <p>Something went wrong...</p>}
-    </main>
+        {error && <p>Something went wrong...</p>}
+      </main>
+    </div>
   )
 }
 

@@ -2,19 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-.img-container {
-	height: 0;
-	padding-bottom: 80%;
+html,
+body {
+  background-color: #10051f;
+  color: white;
 }
 
+.img-container {
+  height: 0;
+  padding-bottom: 80%;
+}
 
 // tooltip starts
 .tooltip .tooltip-text {
-	visibility: hidden;
+  visibility: hidden;
 }
 
 .tooltip:hover .tooltip-text {
-	visibility: visible;
+  visibility: visible;
 }
 
 //tooltip ends
