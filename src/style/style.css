@@ -1,10 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 html,
 body {
+  overflow-x: hidden;
   background-color: #10051f;
   color: white;
+  font-family: "Ubuntu", sans-serif;
+}
+
+h1 {
+  font-size: 48px;
+  line-height: 55px;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: 500;
+}
+
+p,
+input,
+button {
+  font-size: 24px;
+}
+
+input {
+  color: black;
+}
+
+button {
+  padding: 6px 14px;
+  border-radius: 40px;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 991px) {
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p,
+input,
+button {
+    font-size: 16px;
+  }
+}
+.triangle {
+  width: 0;
+  height: 0;
+  border: 2.3vw solid transparent;
+  border-top: 0;
+  border-bottom: 3.5vw solid;
+  animation: star-rotate 5s linear infinite;
+}
+
+.triangle.triangle2 {
+  animation: star-rotate 6s ease-in-out infinite;
+}
+
+.orbit {
+  animation: rotate 15s linear infinite;
 }
 
 .img-container {
@@ -12,6 +74,34 @@ body {
   padding-bottom: 80%;
 }
 
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes star-rotate {
+  0% {
+    transform: scale(0.6) rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: scale(1) rotate(120deg);
+  }
+  75% {
+    transform: 270deg;
+  }
+  100% {
+    transform: scale(0.6) rotate(360deg);
+  }
+}
 .tooltip .tooltip-text {
   visibility: hidden;
 }
