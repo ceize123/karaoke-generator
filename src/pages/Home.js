@@ -109,37 +109,37 @@ function Home() {
 
   return (
     <div className='container max-w-7xl mx-auto'>
-      <div className='absolute top-0 right-0 w-[45vw] max-w-4xl'>
+      <div className='absolute top-0 right-0 w-[45vw] max-w-xl 3xl:max-w-3xl'>
         <div className='relative flex justify-end'>
           <div className='w-4/5'>
             <img className='w-full h-auto' src={pattern} alt='pattern' />
           </div>
-          <div className='triangle text-pink absolute top-0 left-0'></div>
-          <div className='triangle triangle2 text-pink absolute top-[20vh] left-[5vw] 3xl:hidden'></div>
+          <div className='triangle text-pink absolute top-5 left-0'></div>
+          <div className='triangle triangle2 text-pink absolute top-28 left-[5vw] 3xl:hidden sm:block hidden'></div>
           <img
-            className='w-[7vw] max-w-[200px] orbit absolute bottom-2 left-[15vw] 2xl:left-56'
+            className='w-[7vw] 3xl:max-w-[200px] max-w-[100px] orbit absolute bottom-2 left-[15vw] 2xl:left-56'
             src={orbit}
             alt='orbit'
           />
         </div>
       </div>
       <main>
-        <section className='w-full h-screen relative grid sm:grid-cols-12 2xl:grid-cols-1 items-center'>
+        <section className='w-full h-screen relative grid sm:grid-cols-12 3xl:grid-cols-1 items-center'>
           <form
             onSubmit={handleSubmit}
-            className='text-center sm:col-span-8 2xl:col-span-1 sm:col-start-2 mx-3 sm:mx-0'
+            className='text-center sm:col-span-8 3xl:col-span-1 sm:col-start-2 mx-1.5 sm:mx-0'
           >
             <div>
               <h1 className='mb-2'>Karaoke Generator</h1>
               <p className='lg:mb-4 mb-2'>Easily remove vocals from music</p>
               <div
-                className='w-full flex justify-center items-center sm:h-[6vw] max-h-[75px] h-12'
+                className='sm:w-full w-[340px] flex justify-center items-center sm:h-[6vw] max-h-[75px] mx-auto'
                 style={{
                   background: `url(${bgBar}) no-repeat center center / contain`,
                 }}
               >
                 <input
-                  className='border-4 border-primary py-1 px-4 2xl:w-3/5 sm:w-[93%] w-4/5 rounded-3xl'
+                  className='border-4 border-primary py-1 px-4 3xl:w-3/5 sm:w-11/12 w-[320px] rounded-3xl'
                   type='text'
                   id='music'
                   name='music'

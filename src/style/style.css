@@ -37,27 +37,12 @@ button {
   font-weight: 500;
 }
 
-@media only screen and (max-width: 991px) {
-  h1 {
-    font-size: 32px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  p,
-input,
-button {
-    font-size: 16px;
-  }
-}
 .triangle {
   width: 0;
   height: 0;
-  border: 2.3vw solid transparent;
+  border: 30px solid transparent;
   border-top: 0;
-  border-bottom: 3.5vw solid;
+  border-bottom: 45px solid;
   animation: star-rotate 5s linear infinite;
 }
 
@@ -100,6 +85,26 @@ button {
   }
   100% {
     transform: scale(0.6) rotate(360deg);
+  }
+}
+@media only screen and (max-width: 991px) {
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p,
+input,
+button {
+    font-size: 16px;
+  }
+
+  .triangle {
+    border: 2.3vw solid transparent;
+    border-bottom: 3.5vw solid;
   }
 }
 .tooltip .tooltip-text {
