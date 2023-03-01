@@ -12,7 +12,6 @@ body {
 
 h1 {
   font-size: 48px;
-  line-height: 55px;
   font-weight: bold;
 }
 
@@ -21,6 +20,7 @@ h2 {
   font-weight: 500;
 }
 
+h3,
 p,
 input,
 button {
@@ -87,7 +87,7 @@ button {
     transform: scale(0.6) rotate(360deg);
   }
 }
-@media only screen and (max-width: 991px) {
+@media only screen and (max-width: 1023px) {
   h1 {
     font-size: 32px;
   }
@@ -96,7 +96,8 @@ button {
     font-size: 24px;
   }
 
-  p,
+  h3,
+p,
 input,
 button {
     font-size: 16px;

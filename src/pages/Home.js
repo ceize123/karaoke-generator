@@ -3,9 +3,8 @@ import '../style/style.css'
 import MusicDataService from '../services/music.service'
 import { SearchSec, SearchSecSingle } from '../components/Search-Sec'
 import { v4 as uuidv4 } from 'uuid'
-import pattern from '../img/bg-pattern.png'
-import orbit from '../img/orbit.png'
 import bgBar from '../img/bg-input-bar.png'
+import BGPattern from '../components/BG-Pattern'
 
 function isValidHttpURL(string) {
   let url
@@ -109,22 +108,9 @@ function Home() {
 
   return (
     <div className='container max-w-7xl mx-auto'>
-      <div className='absolute top-0 right-0 w-[45vw] max-w-xl 3xl:max-w-3xl'>
-        <div className='relative flex justify-end'>
-          <div className='w-4/5'>
-            <img className='w-full h-auto' src={pattern} alt='pattern' />
-          </div>
-          <div className='triangle text-pink absolute top-5 left-0'></div>
-          <div className='triangle triangle2 text-pink absolute top-28 left-[5vw] 3xl:hidden sm:block hidden'></div>
-          <img
-            className='w-[7vw] 3xl:max-w-[200px] max-w-[100px] orbit absolute bottom-2 left-[15vw] 2xl:left-56'
-            src={orbit}
-            alt='orbit'
-          />
-        </div>
-      </div>
+      <BGPattern />
       <main>
-        <section className='w-full h-screen relative grid sm:grid-cols-12 3xl:grid-cols-1 items-center'>
+        <section className='w-full h-[60vh] md:max-h-[500px] max-h-[350px] relative grid sm:grid-cols-12 3xl:grid-cols-1 items-end'>
           <form
             onSubmit={handleSubmit}
             className='text-center sm:col-span-8 3xl:col-span-1 sm:col-start-2 mx-1.5 sm:mx-0'
@@ -138,18 +124,29 @@ function Home() {
                   background: `url(${bgBar}) no-repeat center center / contain`,
                 }}
               >
-                <input
-                  className='border-4 border-primary py-1 px-4 3xl:w-3/5 sm:w-11/12 w-[320px] rounded-3xl'
-                  type='text'
-                  id='music'
-                  name='music'
-                  placeholder='Youtube link, song, any key words'
-                />
+                <div className='relative 3xl:w-3/5 sm:w-11/12 w-[320px]'>
+                  <input
+                    className='border-4 border-primary lg:py-4 py-2 px-5 w-full rounded-[40px]'
+                    type='text'
+                    id='music'
+                    name='music'
+                    placeholder='Youtube link, song, any key words'
+                  />
+                  <button
+                    className='bg-primary absolute right-3.5 top-1/2 -translate-y-1/2 hidden sm:block'
+                    type='submit'
+                  >
+                    Search
+                  </button>
+                </div>
               </div>
+              <button
+                className='bg-primary sm:hidden inline text-center mt-3'
+                type='submit'
+              >
+                Search
+              </button>
             </div>
-            <button className='bg-primary' type='submit'>
-              Search
-            </button>
           </form>
         </section>
         {searchRes.length > 0 && (

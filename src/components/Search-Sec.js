@@ -7,23 +7,26 @@ export function SearchSec({ res, onHandleChange }) {
       {res.map((item, idx) => {
         const { title, thumbnail } = item
         return (
-          <div key={idx} className='p-3 bg-slate-500 text-center'>
-            <div className='relative tooltip text-left'>
-              <h2 className='h-14'>
-                {title.substring(0, 50)}
-                {title.length > 50 && '...'}
-              </h2>
-              <span className='tooltip-text absolute p-1 rounded-md bg-black text-white text-sm'>
-                {title}
-              </span>
-            </div>
+          <div
+            key={idx}
+            className='p-3 bg-secondary rounded-lg text-center relative'
+          >
             <div
-              className='overflow-hidden img-container mb-3'
+              className='overflow-hidden img-container'
               style={{
                 background: `url(${thumbnail}) 
 							no-repeat center center / contain `,
               }}
             ></div>
+            <div className='tooltip text-left'>
+              <h3 className='h-14'>
+                {title.substring(0, 50)}
+                {title.length > 50 && '...'}
+              </h3>
+              <span className='tooltip-text absolute top-2 p-1 rounded-md bg-black text-white text-sm'>
+                {title}
+              </span>
+            </div>
             {/* https://stackoverflow.com/questions/72212466/react-changed-state-in-child-component-how-to-see-the-change-in-parent-compone */}
             <Button content={item} onHandleChange={onHandleChange} />
           </div>
