@@ -1,8 +1,7 @@
-export default function AudioSection({ data, info }) {
+export default function AudioSection({ data }) {
   return (
     <section>
       <div className='flex justify-center'>
-        {/* <AudioPlayer playList={playList} /> */}
         <audio controls>
           <source src={data} type='audio/x-wav' />
         </audio>
