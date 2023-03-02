@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../style/style.css'
 import MusicDataService from '../services/music.service'
-import { SearchSec, SearchSecSingle } from '../components/Search-Sec'
+import SearchSection from '../components/Search-Section'
 import { v4 as uuidv4 } from 'uuid'
 import bgBar from '../img/bg-input-bar.png'
 import BGPattern from '../components/BG-Pattern'
@@ -20,49 +20,14 @@ function Home() {
   const [status, setStatus] = useState('')
   const [data, setData] = useState()
   const [searchRes, setSearchRes] = useState([])
-  const [downloading, setDownloading] = useState(false)
-  const [error, setError] = useState(false)
+  const [processing, setProcessing] = useState(false)
+  const [error, setError] = useState('')
   const [active, setActive] = useState(false)
-
-  const download = async () => {
-    setData()
-    setError(false)
-    setStatus('Downloading...')
-
-    const data = {
-      url: searchRes[0].url,
-    }
-
-    try {
-      const res = await MusicDataService.download(data)
-      console.log(res.data)
-      addToTask()
-    } catch {
-      setError(true)
-    }
-  }
-
-  const addToTask = async () => {
-    setStatus('Spleeting...')
-    const data = {
-      uid: JSON.parse(sessionStorage.uid)['uid'],
-      video_id: searchRes[0].id,
-      video_title: searchRes[0].title,
-    }
-
-    try {
-      setActive(true)
-      const res = await MusicDataService.generate(data)
-      console.log(res)
-      setData(URL.createObjectURL(res.data))
-    } catch {
-      setError(true)
-    }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError(false)
+    setProcessing(true)
+    setError('')
 
     const keyword = e.target.music.value
     console.log(keyword)
@@ -74,19 +39,63 @@ function Home() {
     try {
       const res = await MusicDataService.search(data)
       setSearchRes(res.data.videos)
+      setProcessing(false)
     } catch {
-      setError(true)
+      setProcessing(false)
+      setError('search')
     }
   }
 
-  const onHandleChange = (res) => {
-    setSearchRes([res])
+  // const onHandleChange = (res) => {
+  //   setSearchRes([res])
+  // }
+
+  const onHandleDownload = async (id) => {
+    console.log(id)
+    const index = searchRes.findIndex((item) => item.id === id)
+    const url = searchRes[index].url
+    console.log(url)
+    setData()
+    setProcessing(true)
+    setError('')
+    setStatus('Downloading...')
+
+    const data = {
+      url: url,
+    }
+
+    try {
+      const res = await MusicDataService.download(data)
+      console.log(res.data)
+      addToTask(index)
+    } catch {
+      setError('download')
+      setProcessing(false)
+    }
   }
 
-  const onHandleDownload = (res) => {
-    setDownloading(res)
-    console.log(searchRes)
-    download()
+  const addToTask = async (index) => {
+    setStatus('Spleeting...')
+    const data = {
+      uid: JSON.parse(sessionStorage.uid)['uid'],
+      video_id: searchRes[index].id,
+      video_title: searchRes[index].title,
+    }
+    setError('')
+    console.log(index)
+    console.log(data)
+
+    try {
+      setActive(true)
+      const res = await MusicDataService.generate(data)
+      console.log(res)
+      setData(URL.createObjectURL(res.data))
+      setStatus('Done!')
+      setProcessing(false)
+    } catch {
+      setError('download')
+      setProcessing(false)
+    }
   }
 
   // Create uuid
@@ -133,8 +142,9 @@ function Home() {
                     placeholder='Youtube link, song, any key words'
                   />
                   <button
-                    className='bg-primary absolute right-3.5 top-1/2 -translate-y-1/2 hidden sm:block'
+                    className='bg-primary absolute right-3.5 top-1/2 -translate-y-1/2 hidden sm:block disabled:opacity-75'
                     type='submit'
+                    disabled={processing}
                   >
                     Search
                   </button>
@@ -150,16 +160,7 @@ function Home() {
           </form>
         </section>
         {searchRes.length > 0 && (
-          <section className='w-full flex justify-center my-8'>
-            {searchRes.length === 1 ? (
-              <SearchSecSingle
-                res={searchRes[0]}
-                onHandleChange={onHandleDownload}
-              />
-            ) : (
-              <SearchSec res={searchRes} onHandleChange={onHandleChange} />
-            )}
-          </section>
+          <SearchSection res={searchRes} onHandleClick={onHandleDownload} />
         )}
         <section>
           <p>{status}</p>
@@ -172,7 +173,25 @@ function Home() {
             </div>
           )}
         </section>
-        {error && <p>Something went wrong...</p>}
+        {error !== '' ? (
+          error === 'search' ? (
+            <div className='text-center mt-20'>
+              <p className='text-base'>
+                Can't find what you're looking for?
+                <br />
+                Try using more
+                <span className='text-pink'>specific keywords</span> or directly
+                pasting the <span className='text-pink'>YouTube link.</span>
+              </p>
+            </div>
+          ) : (
+            <div className='text-center mt-20'>
+              <p className='text-base'>Something went wrong...</p>
+            </div>
+          )
+        ) : (
+          ''
+        )}
       </main>
     </div>
   )
