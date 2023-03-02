@@ -116,4 +116,30 @@ button {
   visibility: visible;
 }
 
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-mute-button,
+audio::-webkit-media-controls-volume-slider,
+audio::-webkit-media-controls-timeline {
+  background-color: #e76f00;
+}
+
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-mute-button {
+  border-radius: 50%;
+}
+
+audio::-webkit-media-controls-volume-slider {
+  border-radius: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+audio::-webkit-media-controls-timeline {
+  background-color: #e76f00;
+  border-radius: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -9,7 +9,13 @@ const timeFormat = (duration) => {
   return res
 }
 
-export default function SearchCard({ info, single, onHandleClick }) {
+export default function SearchCard({
+  info,
+  single,
+  onHandleClick,
+  processing,
+  complete,
+}) {
   const { title, thumbnail, duration } = info
   const time = timeFormat(duration)
   return (
@@ -43,13 +49,16 @@ export default function SearchCard({ info, single, onHandleClick }) {
       </div>
       {/* https://stackoverflow.com/questions/72212466/react-changed-state-in-child-component-how-to-see-the-change-in-parent-compone */}
       {/* <Button content={item} onHandleChange={onHandleChange} /> */}
-      <button
-        type='button'
-        onClick={onHandleClick}
-        className='inline-flex items-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-      >
-        Convert
-      </button>
+      {!complete && (
+        <button
+          type='button'
+          onClick={onHandleClick}
+          className='inline-flex items-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-75'
+          disabled={processing}
+        >
+          Convert
+        </button>
+      )}
     </>
   )
 }

@@ -3,8 +3,11 @@ import '../style/style.css'
 import MusicDataService from '../services/music.service'
 import SearchSection from '../components/Search-Section'
 import { v4 as uuidv4 } from 'uuid'
-import bgBar from '../img/bg-input-bar.png'
+// import bgBar from '../img/bg-input-bar.png'
 import BGPattern from '../components/BG-Pattern'
+import ErrorMsg from '../components/Error-Msg'
+import Form from '../components/Form'
+import AudioSection from '../components/Audio-Section'
 
 function isValidHttpURL(string) {
   let url
@@ -21,16 +24,23 @@ function Home() {
   const [data, setData] = useState()
   const [searchRes, setSearchRes] = useState([])
   const [processing, setProcessing] = useState(false)
+  const [complete, setComplete] = useState(false)
   const [error, setError] = useState('')
   const [active, setActive] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setProcessing(true)
-    setError('')
-
+    setData()
+    setSearchRes([])
     const keyword = e.target.music.value
-    console.log(keyword)
+    if (keyword === '') {
+      setError('empty')
+      return
+    }
+
+    setProcessing(true)
+    setComplete(false)
+    setError('')
     const data = {
       val: keyword,
       isUrl: isValidHttpURL(keyword),
@@ -46,12 +56,7 @@ function Home() {
     }
   }
 
-  // const onHandleChange = (res) => {
-  //   setSearchRes([res])
-  // }
-
   const onHandleDownload = async (id) => {
-    console.log(id)
     const index = searchRes.findIndex((item) => item.id === id)
     const url = searchRes[index].url
     console.log(url)
@@ -59,6 +64,7 @@ function Home() {
     setProcessing(true)
     setError('')
     setStatus('Downloading...')
+    setComplete(false)
 
     const data = {
       url: url,
@@ -82,7 +88,6 @@ function Home() {
       video_title: searchRes[index].title,
     }
     setError('')
-    console.log(index)
     console.log(data)
 
     try {
@@ -92,6 +97,8 @@ function Home() {
       setData(URL.createObjectURL(res.data))
       setStatus('Done!')
       setProcessing(false)
+      setSearchRes([searchRes[index]])
+      setComplete(true)
     } catch {
       setError('download')
       setProcessing(false)
@@ -119,7 +126,9 @@ function Home() {
     <div className='container max-w-7xl mx-auto'>
       <BGPattern />
       <main>
-        <section className='w-full h-[60vh] md:max-h-[500px] max-h-[350px] relative grid sm:grid-cols-12 3xl:grid-cols-1 items-end'>
+        {/* Form */}
+        <Form handleSubmit={handleSubmit} processing={processing} />
+        {/* <section className='w-full h-[60vh] md:max-h-[500px] max-h-[350px] relative grid sm:grid-cols-12 3xl:grid-cols-1 items-end'>
           <form
             onSubmit={handleSubmit}
             className='text-center sm:col-span-8 3xl:col-span-1 sm:col-start-2 mx-1.5 sm:mx-0'
@@ -158,12 +167,31 @@ function Home() {
               </button>
             </div>
           </form>
-        </section>
+        </section> */}
+        {/* Form */}
+
+        <p className='text-center'>{status}</p>
+
+        {/* Error */}
+        {error !== '' && <ErrorMsg error={error} />}
+        {/* Error */}
+
+        {/* Search Result */}
         {searchRes.length > 0 && (
-          <SearchSection res={searchRes} onHandleClick={onHandleDownload} />
+          <SearchSection
+            res={searchRes}
+            onHandleClick={onHandleDownload}
+            processing={processing}
+            complete={complete}
+          />
         )}
-        <section>
-          <p>{status}</p>
+        {/* Search Result */}
+
+        {/* Output */}
+        {typeof data !== 'undefined' && (
+          <AudioSection data={data} info={searchRes[0]} />
+        )}
+        {/* <section>
           {typeof data !== 'undefined' && (
             <div>
               <p>{data}</p>
@@ -172,26 +200,8 @@ function Home() {
               </audio>
             </div>
           )}
-        </section>
-        {error !== '' ? (
-          error === 'search' ? (
-            <div className='text-center mt-20'>
-              <p className='text-base'>
-                Can't find what you're looking for?
-                <br />
-                Try using more
-                <span className='text-pink'>specific keywords</span> or directly
-                pasting the <span className='text-pink'>YouTube link.</span>
-              </p>
-            </div>
-          ) : (
-            <div className='text-center mt-20'>
-              <p className='text-base'>Something went wrong...</p>
-            </div>
-          )
-        ) : (
-          ''
-        )}
+        </section> */}
+        {/* Output */}
       </main>
     </div>
   )
