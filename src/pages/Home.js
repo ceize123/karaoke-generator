@@ -29,16 +29,19 @@ function Home() {
   const [error, setError] = useState('')
   const [active, setActive] = useState(false)
 
-  const beginState = () => {
+  const beginState = (option) => {
     setData()
     setProcessing(true)
-    setComplete(false)
+    setStatus(option)
     setError('')
+    setModal(true)
+    setComplete(false)
   }
 
   const errorState = (err) => {
-    setError(err)
     setProcessing(false)
+    setStatus('')
+    setError(err)
     setModal(false)
   }
 
@@ -50,8 +53,8 @@ function Home() {
       setError('Empty')
       return
     }
+    beginState('Searching')
 
-    beginState()
     const data = {
       val: keyword,
       isUrl: isValidHttpURL(keyword),
@@ -60,7 +63,7 @@ function Home() {
     try {
       const res = await MusicDataService.search(data)
       setSearchRes(res.data.videos)
-      setProcessing(false)
+      setStatus('Done')
     } catch {
       errorState('Search')
     }
@@ -70,10 +73,7 @@ function Home() {
     const index = searchRes.findIndex((item) => item.id === id)
     const url = searchRes[index].url
     console.log(url)
-
-    setStatus('Downloading')
-    setModal(true)
-    beginState()
+    beginState('Downloading')
 
     const data = {
       url: url,

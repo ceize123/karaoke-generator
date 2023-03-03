@@ -1,12 +1,6 @@
 import SearchCard from './Search-Card'
 
-export default function SearchSection({
-  res,
-  onHandleClick,
-  processing,
-  complete,
-}) {
-  console.log(res)
+export default function SearchSection({ res, onHandleClick, processing }) {
   const handleDownloadClick = (id) => {
     onHandleClick(id)
   }
@@ -26,7 +20,6 @@ export default function SearchSection({
                   single={false}
                   onHandleClick={() => handleDownloadClick(item.id)}
                   processing={processing}
-                  complete={complete}
                 />
               </div>
             )
@@ -39,7 +32,6 @@ export default function SearchSection({
             single={true}
             onHandleClick={() => handleDownloadClick(res[0].id)}
             processing={processing}
-            complete={complete}
           />
         </div>
       )}
