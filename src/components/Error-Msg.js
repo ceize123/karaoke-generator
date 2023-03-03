@@ -2,9 +2,9 @@ export default function ErrorMsg({ error }) {
   return (
     <div className='text-center mt-20'>
       <p className='text-base'>
-        {error === 'empty' ? (
+        {error === 'Empty' ? (
           <>Must not have an empty input</>
-        ) : error === 'search' ? (
+        ) : error === 'Search' ? (
           <>
             Can't find what you're looking for?
             <br />

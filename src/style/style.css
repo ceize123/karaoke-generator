@@ -43,15 +43,6 @@ button {
   border: 30px solid transparent;
   border-top: 0;
   border-bottom: 45px solid;
-  animation: star-rotate 5s linear infinite;
-}
-
-.triangle.triangle2 {
-  animation: star-rotate 6s ease-in-out infinite;
-}
-
-.orbit {
-  animation: rotate 15s linear infinite;
 }
 
 .img-container {
@@ -59,34 +50,6 @@ button {
   padding-bottom: 56%;
 }
 
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@keyframes star-rotate {
-  0% {
-    transform: scale(0.6) rotate(0deg);
-  }
-  25% {
-    transform: rotate(90deg);
-  }
-  50% {
-    transform: scale(1) rotate(120deg);
-  }
-  75% {
-    transform: 270deg;
-  }
-  100% {
-    transform: scale(0.6) rotate(360deg);
-  }
-}
 @media only screen and (max-width: 1023px) {
   h1 {
     font-size: 32px;
