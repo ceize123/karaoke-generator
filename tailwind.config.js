@@ -13,6 +13,9 @@ module.exports = {
         '2xl': '1600px',
         '3xl': '2000px',
       },
+      transitionProperty: {
+        width: 'width',
+      },
     },
   },
   plugins: [],

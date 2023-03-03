@@ -7,6 +7,7 @@ import BGPattern from '../components/BG-Pattern'
 import ErrorMsg from '../components/Error-Msg'
 import Form from '../components/Form'
 import AudioSection from '../components/Audio-Section'
+import Modal from '../components/Modal'
 
 function isValidHttpURL(string) {
   let url
@@ -20,6 +21,7 @@ function isValidHttpURL(string) {
 
 function Home() {
   const [status, setStatus] = useState('')
+  const [modal, setModal] = useState(false)
   const [data, setData] = useState()
   const [searchRes, setSearchRes] = useState([])
   const [processing, setProcessing] = useState(false)
@@ -27,19 +29,29 @@ function Home() {
   const [error, setError] = useState('')
   const [active, setActive] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const beginState = () => {
     setData()
-    setSearchRes([])
-    const keyword = e.target.music.value
-    if (keyword === '') {
-      setError('empty')
-      return
-    }
-
     setProcessing(true)
     setComplete(false)
     setError('')
+  }
+
+  const errorState = (err) => {
+    setError(err)
+    setProcessing(false)
+    setModal(false)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setSearchRes([])
+    const keyword = e.target.music.value
+    if (keyword === '') {
+      setError('Empty')
+      return
+    }
+
+    beginState()
     const data = {
       val: keyword,
       isUrl: isValidHttpURL(keyword),
@@ -50,8 +62,7 @@ function Home() {
       setSearchRes(res.data.videos)
       setProcessing(false)
     } catch {
-      setProcessing(false)
-      setError('search')
+      errorState('Search')
     }
   }
 
@@ -59,11 +70,10 @@ function Home() {
     const index = searchRes.findIndex((item) => item.id === id)
     const url = searchRes[index].url
     console.log(url)
-    setData()
-    setProcessing(true)
-    setError('')
-    setStatus('Downloading...')
-    setComplete(false)
+
+    setStatus('Downloading')
+    setModal(true)
+    beginState()
 
     const data = {
       url: url,
@@ -74,13 +84,12 @@ function Home() {
       console.log(res.data)
       addToTask(index)
     } catch {
-      setError('download')
-      setProcessing(false)
+      errorState('Download')
     }
   }
 
   const addToTask = async (index) => {
-    setStatus('Spleeting...')
+    setStatus('Processing')
     const data = {
       uid: JSON.parse(sessionStorage.uid)['uid'],
       video_id: searchRes[index].id,
@@ -94,15 +103,20 @@ function Home() {
       const res = await MusicDataService.generate(data)
       console.log(res)
       setData(URL.createObjectURL(res.data))
-      setStatus('Done!')
-      setProcessing(false)
+      setStatus('Done')
       setSearchRes([searchRes[index]])
-      setComplete(true)
     } catch {
-      setError('download')
-      setProcessing(false)
+      errorState('Download')
     }
   }
+
+  useEffect(() => {
+    if (complete) {
+      setModal(false)
+      setStatus('')
+      setProcessing(false)
+    }
+  }, [complete])
 
   // Create uuid
   useEffect(() => {
@@ -129,7 +143,7 @@ function Home() {
         <Form handleSubmit={handleSubmit} processing={processing} />
         {/* Form */}
 
-        <p className='text-center'>{status}</p>
+        {modal && <Modal status={status} setComplete={setComplete} />}
 
         {/* Error */}
         {error !== '' && <ErrorMsg error={error} />}
