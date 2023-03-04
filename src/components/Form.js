@@ -3,19 +3,19 @@ import bgBar from '../img/bg-input-bar.png'
 export default function Form({ handleSubmit, processing }) {
   return (
     <section className='md:w-2/3 w-full 2xl:h-80 md:h-[450px] h-80 relative flex items-end mx-auto overflow-hidden'>
-      <form onSubmit={handleSubmit} className='text-center mx-1.5 sm:mx-0 grow'>
+      <form onSubmit={handleSubmit} className='text-center mx-2 sm:mx-0 grow'>
         <div>
           <h1 className='mb-2'>Karaoke Generator</h1>
           <p className='lg:mb-4 mb-2'>Easily remove vocals from music</p>
           <div
-            className='sm:w-full w-[340px] flex justify-center items-center sm:h-[6vw] max-h-[75px] mx-auto'
+            className='sm:w-4/5 w-full flex justify-center items-center mx-auto rounded-[40px]'
             style={{
-              background: `url(${bgBar}) no-repeat center center / contain`,
+              background: `url(${bgBar}) no-repeat center center / cover`,
             }}
           >
-            <div className='relative 3xl:w-3/5 sm:w-11/12 w-[320px]'>
+            <div className='relative w-11/12'>
               <input
-                className='border-4 border-primary lg:py-4 py-2 px-5 w-full rounded-[40px]'
+                className='border-4 border-primary lg:py-4 py-2 pl-5 lg:pr-32 sm:pr-24 pr-5  w-full rounded-[40px]'
                 type='text'
                 id='music'
                 name='music'
@@ -33,6 +33,7 @@ export default function Form({ handleSubmit, processing }) {
           <button
             className='bg-primary sm:hidden inline text-center mt-3'
             type='submit'
+            disabled={processing}
           >
             Search
           </button>
