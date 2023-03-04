@@ -1,12 +1,6 @@
 import SearchCard from './Search-Card'
 
-export default function SearchSection({
-  res,
-  onHandleClick,
-  processing,
-  complete,
-}) {
-  console.log(res)
+export default function SearchSection({ res, onHandleClick, processing }) {
   const handleDownloadClick = (id) => {
     onHandleClick(id)
   }
@@ -14,7 +8,7 @@ export default function SearchSection({
   return (
     <section className='w-full flex justify-center md:mt-20 mt-8 mb-8'>
       {res.length > 1 ? (
-        <div className='grid grid-cols-3 gap-x-4 gap-y-8 mx-6'>
+        <div className='grid md:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-8 sm:mx-6 mx-3'>
           {res.map((item, idx) => {
             return (
               <div
@@ -26,7 +20,6 @@ export default function SearchSection({
                   single={false}
                   onHandleClick={() => handleDownloadClick(item.id)}
                   processing={processing}
-                  complete={complete}
                 />
               </div>
             )
@@ -39,7 +32,6 @@ export default function SearchSection({
             single={true}
             onHandleClick={() => handleDownloadClick(res[0].id)}
             processing={processing}
-            complete={complete}
           />
         </div>
       )}

@@ -37,19 +37,29 @@ button {
   font-weight: 500;
 }
 
-.triangle {
-  width: 0;
-  height: 0;
-  border: 30px solid transparent;
-  border-top: 0;
-  border-bottom: 45px solid;
-}
-
 .img-container {
   height: 0;
   padding-bottom: 56%;
 }
 
+.loading {
+  animation: extend 2.5s steps(3, end) infinite;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.loading:before {
+  content: "...";
+}
+
+@keyframes extend {
+  0% {
+    width: 0.25em;
+  }
+  100% {
+    width: 1em;
+  }
+}
 @media only screen and (max-width: 1023px) {
   h1 {
     font-size: 32px;

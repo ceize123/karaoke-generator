@@ -2,7 +2,7 @@ import bgBar from '../img/bg-input-bar.png'
 
 export default function Form({ handleSubmit, processing }) {
   return (
-    <section className='md:w-2/3 w-full lg:h-[60vh] md:h-[50vh] h-[40vh] relative flex items-end mx-auto'>
+    <section className='md:w-2/3 w-full 2xl:h-80 md:h-[450px] h-80 relative flex items-end mx-auto overflow-hidden'>
       <form onSubmit={handleSubmit} className='text-center mx-1.5 sm:mx-0 grow'>
         <div>
           <h1 className='mb-2'>Karaoke Generator</h1>

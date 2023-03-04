@@ -5,7 +5,6 @@ export default function Modal({ status, setComplete }) {
   useEffect(() => {
     const progressInterval = setInterval(() => {
       if (status === 'Downloading' && progress < 50) {
-        //assign interval to a variable to clear it.
         setProgress(progress + 1)
       } else if (status === 'Processing') {
         if (progress >= 50 && progress < 97) {
@@ -19,6 +18,8 @@ export default function Modal({ status, setComplete }) {
         } else if (progress < 97) {
           setProgress(97)
         }
+      } else if (status === 'Searching' && progress < 97) {
+        setProgress(progress + 1)
       }
     }, 300)
 
@@ -31,8 +32,13 @@ export default function Modal({ status, setComplete }) {
 
   return (
     <div className='w-screen h-screen backdrop-blur-sm bg-white/20 fixed top-0 left-0 z-50 flex items-center justify-center'>
-      <div className='bg-secondary w-1/2 h-1/2 flex flex-col items-center justify-center rounded-lg'>
-        <h2 className='mb-3'>{status}...</h2>
+      <div className='modal bg-secondary w-1/2 h-1/2 flex flex-col items-center justify-center rounded-lg'>
+        <h2 className='mb-3 relative'>
+          {/* <h2 data-text={`${status}...`} className='mb-3 relative'> */}
+          {status}
+          {/* https://codepen.io/chris22smith/pen/pQxjoB */}
+          <span className='loading absolute'>...</span>
+        </h2>
         {/* https://codepen.io/LauraBizzle/pen/wvEMqVN */}
         <div className='relative w-80 h-10 p-1 bg-secondary rounded-3xl border-2 shadow-[0_0_16px_#FA4BC9] flex items-center'>
           <div

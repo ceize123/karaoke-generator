@@ -8,6 +8,7 @@ import ErrorMsg from '../components/Error-Msg'
 import Form from '../components/Form'
 import AudioSection from '../components/Audio-Section'
 import Modal from '../components/Modal'
+import Footer from '../components/Footer'
 
 function isValidHttpURL(string) {
   let url
@@ -29,16 +30,19 @@ function Home() {
   const [error, setError] = useState('')
   const [active, setActive] = useState(false)
 
-  const beginState = () => {
+  const beginState = (option) => {
     setData()
     setProcessing(true)
-    setComplete(false)
+    setStatus(option)
     setError('')
+    setModal(true)
+    setComplete(false)
   }
 
   const errorState = (err) => {
-    setError(err)
     setProcessing(false)
+    setStatus('')
+    setError(err)
     setModal(false)
   }
 
@@ -50,8 +54,8 @@ function Home() {
       setError('Empty')
       return
     }
+    beginState('Searching')
 
-    beginState()
     const data = {
       val: keyword,
       isUrl: isValidHttpURL(keyword),
@@ -60,7 +64,7 @@ function Home() {
     try {
       const res = await MusicDataService.search(data)
       setSearchRes(res.data.videos)
-      setProcessing(false)
+      setStatus('Done')
     } catch {
       errorState('Search')
     }
@@ -70,10 +74,7 @@ function Home() {
     const index = searchRes.findIndex((item) => item.id === id)
     const url = searchRes[index].url
     console.log(url)
-
-    setStatus('Downloading')
-    setModal(true)
-    beginState()
+    beginState('Downloading')
 
     const data = {
       url: url,
@@ -136,37 +137,40 @@ function Home() {
   })
 
   return (
-    <div className='container max-w-7xl mx-auto'>
-      <BGPattern />
-      <main>
-        {/* Form */}
-        <Form handleSubmit={handleSubmit} processing={processing} />
-        {/* Form */}
+    <>
+      <div className='container max-w-7xl mx-auto'>
+        <BGPattern />
+        <main>
+          {/* Form */}
+          <Form handleSubmit={handleSubmit} processing={processing} />
+          {/* Form */}
 
-        {modal && <Modal status={status} setComplete={setComplete} />}
+          {modal && <Modal status={status} setComplete={setComplete} />}
 
-        {/* Error */}
-        {error !== '' && <ErrorMsg error={error} />}
-        {/* Error */}
+          {/* Error */}
+          {error !== '' && <ErrorMsg error={error} />}
+          {/* Error */}
 
-        {/* Search Result */}
-        {searchRes.length > 0 && (
-          <SearchSection
-            res={searchRes}
-            onHandleClick={onHandleDownload}
-            processing={processing}
-            complete={complete}
-          />
-        )}
-        {/* Search Result */}
+          {/* Search Result */}
+          {searchRes.length > 0 && (
+            <SearchSection
+              res={searchRes}
+              onHandleClick={onHandleDownload}
+              processing={processing}
+              complete={complete}
+            />
+          )}
+          {/* Search Result */}
 
-        {/* Output */}
-        {typeof data !== 'undefined' && (
-          <AudioSection data={data} info={searchRes[0]} />
-        )}
-        {/* Output */}
-      </main>
-    </div>
+          {/* Output */}
+          {typeof data !== 'undefined' && (
+            <AudioSection data={data} info={searchRes[0]} />
+          )}
+          {/* Output */}
+        </main>
+      </div>
+      <Footer initial={searchRes.length === 0} />
+    </>
   )
 }
 
