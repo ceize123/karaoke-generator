@@ -37,14 +37,6 @@ button {
   font-weight: 500;
 }
 
-.triangle {
-  width: 0;
-  height: 0;
-  border: 30px solid transparent;
-  border-top: 0;
-  border-bottom: 45px solid;
-}
-
 .img-container {
   height: 0;
   padding-bottom: 56%;

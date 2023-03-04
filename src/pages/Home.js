@@ -8,6 +8,7 @@ import ErrorMsg from '../components/Error-Msg'
 import Form from '../components/Form'
 import AudioSection from '../components/Audio-Section'
 import Modal from '../components/Modal'
+import Footer from '../components/Footer'
 
 function isValidHttpURL(string) {
   let url
@@ -136,37 +137,40 @@ function Home() {
   })
 
   return (
-    <div className='container max-w-7xl mx-auto'>
-      <BGPattern />
-      <main>
-        {/* Form */}
-        <Form handleSubmit={handleSubmit} processing={processing} />
-        {/* Form */}
+    <>
+      <div className='container max-w-7xl mx-auto'>
+        <BGPattern />
+        <main>
+          {/* Form */}
+          <Form handleSubmit={handleSubmit} processing={processing} />
+          {/* Form */}
 
-        {modal && <Modal status={status} setComplete={setComplete} />}
+          {modal && <Modal status={status} setComplete={setComplete} />}
 
-        {/* Error */}
-        {error !== '' && <ErrorMsg error={error} />}
-        {/* Error */}
+          {/* Error */}
+          {error !== '' && <ErrorMsg error={error} />}
+          {/* Error */}
 
-        {/* Search Result */}
-        {searchRes.length > 0 && (
-          <SearchSection
-            res={searchRes}
-            onHandleClick={onHandleDownload}
-            processing={processing}
-            complete={complete}
-          />
-        )}
-        {/* Search Result */}
+          {/* Search Result */}
+          {searchRes.length > 0 && (
+            <SearchSection
+              res={searchRes}
+              onHandleClick={onHandleDownload}
+              processing={processing}
+              complete={complete}
+            />
+          )}
+          {/* Search Result */}
 
-        {/* Output */}
-        {typeof data !== 'undefined' && (
-          <AudioSection data={data} info={searchRes[0]} />
-        )}
-        {/* Output */}
-      </main>
-    </div>
+          {/* Output */}
+          {typeof data !== 'undefined' && (
+            <AudioSection data={data} info={searchRes[0]} />
+          )}
+          {/* Output */}
+        </main>
+      </div>
+      <Footer initial={searchRes.length === 0} />
+    </>
   )
 }
 
