@@ -65,6 +65,7 @@ function Home() {
       const res = await MusicDataService.search(data)
       setSearchRes(res.data.videos)
       setStatus('Done')
+      if (res.data.videos.length === 0) setError('No Result')
     } catch {
       errorState('Search')
     }
@@ -76,17 +77,17 @@ function Home() {
     console.log(url)
     beginState('Downloading')
 
-    // const data = {
-    //   url: url,
-    // }
+    const data = {
+      url: url,
+    }
 
-    // try {
-    //   const res = await MusicDataService.download(data)
-    //   console.log(res.data)
-    //   addToTask(index)
-    // } catch {
-    //   errorState('Download')
-    // }
+    try {
+      const res = await MusicDataService.download(data)
+      console.log(res.data)
+      addToTask(index)
+    } catch {
+      errorState('Download')
+    }
   }
 
   const addToTask = async (index) => {

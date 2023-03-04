@@ -9,7 +9,15 @@ export default function ErrorMsg({ error }) {
             Can't find what you're looking for?
             <br />
             Try using more
-            <span className='text-pink'>specific keywords</span> or directly
+            <span className='text-pink'> specific keywords</span> or directly
+            pasting the <span className='text-pink'>YouTube link.</span>
+          </>
+        ) : error === 'No Result' ? (
+          <>
+            No result.
+            <br />
+            Try using more
+            <span className='text-pink'> specific keywords</span> or directly
             pasting the <span className='text-pink'>YouTube link.</span>
           </>
         ) : (
