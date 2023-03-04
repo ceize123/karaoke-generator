@@ -74,7 +74,6 @@ function Home() {
   const onHandleDownload = async (id) => {
     const index = searchRes.findIndex((item) => item.id === id)
     const url = searchRes[index].url
-    console.log(url)
     beginState('Downloading')
 
     const data = {
@@ -82,8 +81,7 @@ function Home() {
     }
 
     try {
-      const res = await MusicDataService.download(data)
-      console.log(res.data)
+      await MusicDataService.download(data)
       addToTask(index)
     } catch {
       errorState('Download')
@@ -98,12 +96,10 @@ function Home() {
       video_title: searchRes[index].title,
     }
     setError('')
-    console.log(data)
 
     try {
       setActive(true)
       const res = await MusicDataService.generate(data)
-      console.log(res)
       setData(URL.createObjectURL(res.data))
       setStatus('Done')
       setSearchRes([searchRes[index]])
@@ -131,7 +127,6 @@ function Home() {
 
   window.addEventListener('beforeunload', () => {
     const ses = JSON.parse(sessionStorage.uid)
-    console.log(active)
     if (active) {
       MusicDataService.unload(ses['uid'])
     }
@@ -158,7 +153,7 @@ function Home() {
               res={searchRes}
               onHandleClick={onHandleDownload}
               processing={processing}
-              complete={complete}
+              hasAudio={typeof data !== 'undefined'}
             />
           )}
           {/* Search Result */}

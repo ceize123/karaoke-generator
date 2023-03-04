@@ -16,6 +16,7 @@ export default function SearchCard({
   single,
   onHandleClick,
   processing,
+  hasAudio,
 }) {
   const { title, thumbnail, duration } = info
   const time = timeFormat(duration)
@@ -33,7 +34,7 @@ export default function SearchCard({
           {time}
         </span>
       </div>
-      <div className={`tooltip text-left ${single ? 'mb-12' : 'mb-3'}`}>
+      <div className={`tooltip text-left ${single ? 'md:mb-12 mb-6' : 'mb-3'}`}>
         {single ? (
           <h3>{title}</h3>
         ) : (
@@ -50,20 +51,14 @@ export default function SearchCard({
       </div>
       {/* https://stackoverflow.com/questions/72212466/react-changed-state-in-child-component-how-to-see-the-change-in-parent-compone */}
       {/* <Button content={item} onHandleChange={onHandleChange} /> */}
-      <RoundedBtn
-        size={`${single ? 'text-2xl py-4 px-6' : 'text-base py-2 px-6'}`}
-        text='Generate'
-        onHandleClick={onHandleClick}
-        processing={processing}
-      />
-      {/* <button
-        type='button'
-        onClick={onHandleClick}
-        className='inline-flex items-center rounded-3xl border border-transparent bg-primary text-base px-4 py-2 font-medium disabled:opacity-75'
-        disabled={processing}
-      >
-        Generate
-      </button> */}
+      {!hasAudio && (
+        <RoundedBtn
+          size={`${single ? 'text-2xl py-4 px-6' : 'text-base py-2 px-6'}`}
+          text='Generate'
+          onHandleClick={onHandleClick}
+          processing={processing}
+        />
+      )}
     </>
   )
 }
