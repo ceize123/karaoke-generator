@@ -1,3 +1,5 @@
+import RoundedBtn from './Rounded-Btn'
+
 const timeFormat = (duration) => {
   const mins = Math.floor(duration / 60)
   const secs = duration % 60
@@ -31,7 +33,7 @@ export default function SearchCard({
           {time}
         </span>
       </div>
-      <div className='tooltip text-left mb-3'>
+      <div className={`tooltip text-left ${single ? 'mb-12' : 'mb-3'}`}>
         {single ? (
           <h3>{title}</h3>
         ) : (
@@ -48,14 +50,20 @@ export default function SearchCard({
       </div>
       {/* https://stackoverflow.com/questions/72212466/react-changed-state-in-child-component-how-to-see-the-change-in-parent-compone */}
       {/* <Button content={item} onHandleChange={onHandleChange} /> */}
-      <button
+      <RoundedBtn
+        size={`${single ? 'text-2xl py-4 px-6' : 'text-base py-2 px-6'}`}
+        text='Generate'
+        onHandleClick={onHandleClick}
+        processing={processing}
+      />
+      {/* <button
         type='button'
         onClick={onHandleClick}
-        className='inline-flex items-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-75'
+        className='inline-flex items-center rounded-3xl border border-transparent bg-primary text-base px-4 py-2 font-medium disabled:opacity-75'
         disabled={processing}
       >
-        Convert
-      </button>
+        Generate
+      </button> */}
     </>
   )
 }

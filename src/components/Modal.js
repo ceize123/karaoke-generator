@@ -21,7 +21,7 @@ export default function Modal({ status, setComplete }) {
       } else if (status === 'Searching' && progress < 97) {
         setProgress(progress + 1)
       }
-    }, 300)
+    }, 800)
 
     return () => clearInterval(progressInterval) //This is important
   }, [status, progress])

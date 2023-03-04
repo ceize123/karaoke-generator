@@ -1,10 +1,16 @@
-export default function RoundedBtn({ text, onHandleClick }) {
+export default function RoundedBtn({
+  size,
+  text,
+  onHandleClick,
+  processing = false,
+}) {
   return (
     <button
       onClick={() => {
         onHandleClick()
       }}
-      className='bg-primary'
+      className={`bg-primary ${size}`}
+      disabled={processing}
     >
       {text}
     </button>
