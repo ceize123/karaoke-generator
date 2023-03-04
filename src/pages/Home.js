@@ -46,6 +46,7 @@ function Home() {
     setModal(false)
   }
 
+  // Search
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSearchRes([])
@@ -71,6 +72,7 @@ function Home() {
     }
   }
 
+  // Download audio from youtube
   const onHandleDownload = async (id) => {
     const index = searchRes.findIndex((item) => item.id === id)
     const url = searchRes[index].url
@@ -82,13 +84,14 @@ function Home() {
 
     try {
       await MusicDataService.download(data)
-      addToTask(index)
+      musicSplit(index)
     } catch {
       errorState('Download')
     }
   }
 
-  const addToTask = async (index) => {
+  // Process split vocal
+  const musicSplit = async (index) => {
     setStatus('Processing')
     const data = {
       uid: JSON.parse(sessionStorage.uid)['uid'],
@@ -100,6 +103,7 @@ function Home() {
     try {
       setActive(true)
       const res = await MusicDataService.generate(data)
+      console.log(res.data)
       setData(URL.createObjectURL(res.data))
       setStatus('Done')
       setSearchRes([searchRes[index]])
