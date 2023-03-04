@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+// import { Adsense } from '@ctrl/react-adsense'
 
 export default function Modal({ status, setComplete }) {
   const [progress, setProgress] = useState(7)
@@ -21,7 +22,7 @@ export default function Modal({ status, setComplete }) {
       } else if (status === 'Searching' && progress < 97) {
         setProgress(progress + 1)
       }
-    }, 800)
+    }, 500)
 
     return () => clearInterval(progressInterval) //This is important
   }, [status, progress])
@@ -48,6 +49,7 @@ export default function Modal({ status, setComplete }) {
           <span className='absolute left-1/2 -translate-x-1/2'>
             {progress}%
           </span>
+          {/* <Adsense client='ca-pub-7038926895807473' slot='7259870550' /> */}
         </div>
       </div>
     </div>
