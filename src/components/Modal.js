@@ -33,7 +33,7 @@ export default function Modal({ status, setComplete }) {
 
   return (
     <div className='w-screen h-screen backdrop-blur-sm bg-white/20 fixed top-0 left-0 z-50 flex items-center justify-center'>
-      <div className='modal bg-secondary w-1/2 h-1/2 flex flex-col items-center justify-center rounded-lg'>
+      <div className='modal bg-[#2C2C2C] md:w-1/2 w-11/12 h-1/2 flex flex-col items-center justify-center rounded-lg'>
         <h2 className='mb-3 relative'>
           {/* <h2 data-text={`${status}...`} className='mb-3 relative'> */}
           {status}
