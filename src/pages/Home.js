@@ -103,7 +103,10 @@ function Home() {
     try {
       setActive(true)
       const res = await MusicDataService.generate(data)
-      console.log(res.data)
+      if (res.data.size < 1000) {
+        setError('Split')
+        return
+      }
       setData(URL.createObjectURL(res.data))
       setStatus('Done')
       setSearchRes([searchRes[index]])
@@ -157,13 +160,13 @@ function Home() {
               res={searchRes}
               onHandleClick={onHandleDownload}
               processing={processing}
-              hasAudio={typeof data !== 'undefined'}
+              hasAudio={typeof data !== 'undefined' && error !== 'Split'}
             />
           )}
           {/* Search Result */}
 
           {/* Output */}
-          {typeof data !== 'undefined' && (
+          {typeof data !== 'undefined' && error === '' && (
             <AudioSection data={data} info={searchRes[0]} />
           )}
           {/* Output */}
