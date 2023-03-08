@@ -21,7 +21,11 @@ export default function ErrorMsg({ error }) {
             pasting the <span className='text-pink'>YouTube link.</span>
           </>
         ) : (
-          <>Something went wrong...</>
+          <>
+            Something went wrong...
+            <br />
+            Please Try again
+          </>
         )}
       </p>
     </div>
