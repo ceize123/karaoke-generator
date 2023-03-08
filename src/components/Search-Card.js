@@ -34,7 +34,7 @@ export default function SearchCard({
           {time}
         </span>
       </div>
-      <div className={`tooltip text-left ${single ? 'md:mb-12 mb-6' : 'mb-3'}`}>
+      <div className={`tooltip text-left ${single ? 'lg:mb-12 mb-6' : 'mb-3'}`}>
         {single ? (
           <h3>{title}</h3>
         ) : (
@@ -53,7 +53,11 @@ export default function SearchCard({
       {/* <Button content={item} onHandleChange={onHandleChange} /> */}
       {!hasAudio && (
         <RoundedBtn
-          size={`${single ? 'text-2xl py-4 px-6' : 'text-base py-2 px-6'}`}
+          size={`${
+            single
+              ? 'lg:text-2xl lg:py-4 lg:px-6 text-base py-2 px-6'
+              : 'text-base py-2 px-6'
+          }`}
           text='Generate'
           onHandleClick={onHandleClick}
           processing={processing}
