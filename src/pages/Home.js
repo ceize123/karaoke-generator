@@ -110,7 +110,8 @@ function Home() {
         return
       }
       setData(URL.createObjectURL(res.data))
-    } catch {
+    } catch (e) {
+      console.log(e)
       errorState('Download')
     }
   }

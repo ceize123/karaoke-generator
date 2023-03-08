@@ -11,7 +11,7 @@ export default function SearchSection({
   }
 
   return (
-    <section className='w-full flex justify-center md:mt-20 mt-8 mb-8'>
+    <section className='w-full flex justify-center md:mt-20 mt-8 mb-6'>
       {res.length > 1 ? (
         <div className='grid md:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-8 sm:mx-6 mx-3'>
           {res.map((item, idx) => {
