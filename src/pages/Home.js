@@ -103,13 +103,13 @@ function Home() {
     try {
       setActive(true)
       const res = await MusicDataService.generate(data)
+      setStatus('Done')
+      setSearchRes([searchRes[index]])
       if (res.data.size < 1000) {
         setError('Split')
         return
       }
       setData(URL.createObjectURL(res.data))
-      setStatus('Done')
-      setSearchRes([searchRes[index]])
     } catch {
       errorState('Download')
     }
