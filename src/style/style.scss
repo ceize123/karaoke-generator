@@ -7,7 +7,7 @@
 html,
 body {
   overflow-x: hidden;
-  background-color: #10051f;
+  background-color: theme('colors.dark');
   color: white;
   font-family: 'Ubuntu', sans-serif;
 }
@@ -97,98 +97,34 @@ button {
 
 //tooltip ends
 
-audio::-webkit-media-controls-play-button,
-audio::-webkit-media-controls-mute-button,
-audio::-webkit-media-controls-volume-slider,
-audio::-webkit-media-controls-timeline {
-  background-color: #e76f00;
-}
-
-audio::-webkit-media-controls-play-button,
-audio::-webkit-media-controls-mute-button {
-  border-radius: 50%;
-}
-
-audio::-webkit-media-controls-volume-slider {
-  border-radius: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-audio::-webkit-media-controls-timeline {
-  border-radius: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-left: 10px;
-}
-
 // Toggle Switch
-
-input[type='checkbox']::before {
-  content: '';
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #fff;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: 0.5s;
-}
+// input[type='checkbox']::before {
+// content: '';
+//   width: 24px;
+//   height: 24px;
+//   border-radius: 50%;
+//   background: #fff;
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   transition: 0.5s;
+// }
 
 input[type='checkbox']:checked::before {
-  transform: translateX(100%);
-  background: #fff;
+  content: url('../img/toggle.png');
+}
+@media only screen and (max-width: 1023px) {
+  input[type='checkbox']:checked::before {
+    content: url('../img/toggle-small.png');
+  }
 }
 
 //
 .audio-player {
-  // display: grid;
-  // grid-template-rows: 6px auto;
-
   .controls {
-    > * {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .time {
-      > * {
-        padding: 2px;
-      }
-    }
-    .volume-container {
-      .volume-button {
-        height: 26px;
-        display: flex;
-        align-items: center;
-        .volume {
-          transform: scale(0.7);
-        }
-      }
-      .volume-slider {
-        position: absolute;
-        left: -3px;
-        top: 15px;
-        z-index: -1;
-        width: 0;
-        height: 15px;
-        background: white;
-        box-shadow: 0 0 20px #000a;
-        transition: 0.25s;
-        .volume-percentage {
-          background: coral;
-          height: 100%;
-          width: 75%;
-        }
-      }
-      &:hover {
-        .volume-slider {
-          left: -123px;
-          width: 120px;
-        }
-      }
+    .panel-button-bg {
+      @apply bg-primary rounded-full;
+      // background-color: theme('colors.primary');
     }
   }
 }

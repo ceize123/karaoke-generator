@@ -2,82 +2,93 @@ import { useState, useEffect, useRef } from 'react'
 import timeFormat from '../helpers'
 import start from '../img/start.png'
 import stop from '../img/stop.png'
+import sound from '../img/sound.png'
+import mute from '../img/mute.png'
 
 export default function AudioPlayer({ accompaniment, vocal, duration }) {
   const accompanimentRef = useRef(null)
   const vocalRef = useRef(null)
+  const timelineRef = useRef(null)
+  const volumeRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isChecked, setIsChecked] = useState(false)
-  const [displayTime, setDisplayTime] = useState()
-  const accompanimentID = document.getElementById('accompaniment')
-  const vocalID = document.getElementById('vocal')
-  const audioPlayer = document.querySelector('.audio-player')
+  const [isGuiding, setIsGuiding] = useState(false)
+  const [displayTime, setDisplayTime] = useState(0)
+  const [volume, setVolume] = useState(0.75)
+  const [isMute, setIsMute] = useState(false)
 
   // Get current play time of the accompaniment
   const timeUpdate = (event) => {
-    const currentTime = event.target.currentTime
-    setDisplayTime(timeFormat(currentTime))
+    setDisplayTime(event.target.currentTime)
   }
 
   //click on timeline to skip around
   const onHandleTimelineUpdate = (e) => {
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
-    const timeline = audioPlayer.querySelector('.timeline')
+    const timeline = timelineRef.current
     const rect = timeline.getBoundingClientRect()
     const timelineWidth = rect.width
-    console.log(rect)
     const timeToSeek =
       ((e.clientX - rect.left) / parseInt(timelineWidth)) * duration
-    console.log(timeToSeek)
-    accompanimentID.currentTime = timeToSeek
-    vocalID.currentTime = timeToSeek
+    accompanimentRef.current.currentTime = timeToSeek
+    vocalRef.current.currentTime = timeToSeek
   }
 
   const onHandlePlay = () => {
     setIsPlaying(!isPlaying)
-  }
-
-  const onHandleTime = (sec) => {
-    accompanimentID.currentTime += sec
-    vocalID.currentTime = accompanimentID.currentTime
-  }
-
-  const onHandleVolume = (vol) => {
-    if (
-      (vol < 0 && accompanimentID.volume > 0) ||
-      (vol > 0 && accompanimentID.volume < 1)
-    ) {
-      accompanimentID.volume = (accompanimentID.volume + vol).toFixed(1)
-      console.log(accompanimentID.volume)
-      vocalID.volume = accompanimentID.volume
-    }
-  }
-
-  const onHandleSpeed = (speed) => {
-    accompanimentID.playbackRate = speed
-    vocalID.playbackRate = speed
-  }
-
-  // Toggle guide vocal
-  const guideVocal = () => {
-    vocalID.currentTime = accompanimentID.currentTime
-    setIsChecked(!isChecked)
-    // vocalRef.current.paused ? vocalRef.current.play() : vocalRef.current.pause()
-  }
-
-  useEffect(() => {
-    if (isPlaying) {
+    if (accompanimentRef.current.paused) {
       accompanimentRef.current.play()
-      if (isChecked) vocalRef.current.play()
+      if (isGuiding) vocalRef.current.play()
     } else {
       accompanimentRef.current.pause()
       vocalRef.current.pause()
     }
-  }, [isPlaying, isChecked])
+  }
+
+  const onHandleTime = (sec) => {
+    accompanimentRef.current.currentTime += sec
+    vocalRef.current.currentTime = accompanimentRef.current.currentTime
+  }
+
+  const onHandleVolumeUpdate = (e) => {
+    // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
+    const vol = volumeRef.current
+    const rect = vol.getBoundingClientRect()
+    const volumeWidth = rect.width
+    const newVolume = (e.clientX - rect.left) / parseInt(volumeWidth)
+    setVolume(newVolume)
+    accompanimentRef.current.volume = newVolume
+    vocalRef.current.volume = newVolume
+  }
+
+  const onHandleMute = () => {
+    setIsMute(!isMute)
+    accompanimentRef.current.muted = !accompanimentRef.current.muted
+  }
+
+  const onHandleSpeed = (speed) => {
+    accompanimentRef.current.playbackRate = speed
+    vocalRef.current.playbackRate = speed
+  }
+
+  // Toggle guide vocal
+  const guideVocal = () => {
+    vocalRef.current.currentTime = accompanimentRef.current.currentTime
+    setIsGuiding(!isGuiding)
+  }
+
+  // useEffect(() => {
+  //   if (isPlaying) {
+  //     accompanimentRef.current.play()
+  //     if (isGuiding) vocalRef.current.play()
+  //   } else {
+  //     accompanimentRef.current.pause()
+  //     vocalRef.current.pause()
+  //   }
+  // }, [isPlaying, isGuiding])
 
   useEffect(() => {
-    isChecked ? vocalRef.current.play() : vocalRef.current.pause()
-  }, [isChecked])
+    isGuiding && isPlaying ? vocalRef.current.play() : vocalRef.current.pause()
+  }, [isGuiding, isPlaying])
 
   return (
     <>
@@ -105,14 +116,9 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
       <div className={`flex flex-col items-center`}>
         <p onClick={() => onHandlePlay()}>{isPlaying ? 'Start' : 'Stop'}</p>
         <div>
-          {displayTime} / {timeFormat(duration)}
+          {timeFormat(displayTime)} / {timeFormat(duration)}
           <button onClick={() => onHandleTime(-5)}>-5</button>
           <button onClick={() => onHandleTime(5)}>+5</button>
-        </div>
-        <div>
-          Volume:
-          <button onClick={() => onHandleVolume(-0.2)}>-</button>
-          <button onClick={() => onHandleVolume(0.2)}>+</button>
         </div>
         <div>
           Speed:
@@ -125,55 +131,108 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
         <p className='text-base'>Guide Vocal</p>
         <input
           type='checkbox'
-          checked={isChecked}
+          checked={isGuiding}
           className='relative w-12 h-6 bg-secondary appearance-none cursor-pointer rounded-3xl checked:bg-primary'
           onChange={guideVocal}
         />
       </div>
       {/* Panel */}
 
-      <div className='mt-3 audio-player relative flex md:w-1/2 w-4/5 h-20 mx-auto rounded-[40px] bg-dark border-8 border-primary text-white'>
+      <div className=' mt-3 audio-player relative flex sm:w-3/5 w-11/12 h-20 mx-auto rounded-[40px] bg-dark border-8 border-primary text-white'>
+        {/* Timeline */}
         <div
+          ref={timelineRef}
           className='timeline bg-white w-5/6 h-2 cursor-pointer absolute -top-2 left-1/2 -translate-x-1/2 z-10'
           onClick={(e) => onHandleTimelineUpdate(e)}
         >
           <div
-            className='progress transition h-2 bg-primary'
+            className='progress transition-all h-2 bg-primary'
             style={{
-              width: `${(accompanimentID.currentTime / duration) * 100}%`,
+              width: `${(displayTime / duration) * 100}%`,
             }}
           ></div>
           <div
-            className='progress-ball absolute w-3 h-3 -top-0.5 bg-primary rounded-xl'
+            className='progress-ball absolute transition-all w-3 h-3 -top-0.5 bg-primary rounded-xl'
             style={{
-              left: `${(accompanimentID.currentTime / duration) * 100 - 2}%`,
+              left: `${(displayTime / duration) * 100 - 2}%`,
             }}
           ></div>
         </div>
-        <div className='controls px-5 flex justify-between items-center my-1 w-full'>
-          <div className='play-container bg-primary w-12 h-12 rounded-full'>
+        {/* Timeline */}
+
+        <div className='controls px-5 flex justify-between items-center sm:my-1 my-2 w-full'>
+          {/* Start, Stop */}
+          <div
+            className='play-container panel-button-bg sm:w-12 sm:h-12 w-10 h-10 cursor-pointer flex justify-center items-center'
+            onClick={() => onHandlePlay()}
+          >
             <img
-              className='w-2/5 h-auto cursor-pointer transition hover:scale-105'
-              onClick={() => onHandlePlay()}
+              className='w-2/5 h-auto transition hover:scale-105'
               src={isPlaying ? stop : start}
               alt={isPlaying ? 'Start' : 'Stop'}
             />
           </div>
-          <div className='time'>
-            <div>
-              {displayTime} / {timeFormat(duration)}
+          {/* Start, Stop */}
+
+          {/* Time */}
+          <div className='time flex justify-center items-center'>
+            <div className='panel-button-bg w-8 h-8 flex justify-center'>
+              <button className='text-xs' onClick={() => onHandleTime(-5)}>
+                -5s
+              </button>
+            </div>
+            <div className='lg:mx-4 mx-1.5'>
+              <p className='text-base'>
+                {timeFormat(displayTime)} / {timeFormat(duration)}
+              </p>
+            </div>
+            <div className='panel-button-bg w-8 h-8 flex justify-center'>
+              <button className='text-xs' onClick={() => onHandleTime(5)}>
+                +5s
+              </button>
             </div>
           </div>
-          <div className='name'>Music Song</div>
-          <div className='volume-container cursor-pointer relative z-10'>
-            <div className='volume-button'>
-              <div className='volume icono-volumeMedium'></div>
+          {/* Time */}
+
+          {/* Volume */}
+          <div className='volume-container relative z-10 hidden md:flex justify-center items-center'>
+            <div
+              className='volume-button panel-button-bg w-8 h-8 flex justify-center items-center cursor-pointer'
+              onClick={() => onHandleMute()}
+            >
+              <div className='volume'>
+                <img
+                  className='w-full h-auto transition hover:scale-105'
+                  src={!isMute ? sound : mute}
+                  alt='sound'
+                />
+              </div>
             </div>
 
-            <div className='volume-slider'>
-              <div className='volume-percentage'></div>
+            <div
+              ref={volumeRef}
+              className='volume-slider w-16 h-2 rounded bg-white cursor-pointer'
+              onClick={(e) => onHandleVolumeUpdate(e)}
+            >
+              <div
+                className='volume-percentage bg-primary h-full transition-all'
+                style={{ width: `${volume * 100}%` }}
+              ></div>
             </div>
           </div>
+          {/* Volume */}
+
+          {/* Guide Vocal */}
+          <div className='flex justify-center items-center'>
+            <input
+              type='checkbox'
+              checked={isGuiding}
+              className='relative lg:w-20 w-12 lg:h-8 h-6 bg-secondary appearance-none cursor-pointer rounded-3xl checked:bg-primary 
+              before:bg-white before:absolute before:left-0 before:lg:-top-1 before:top-0 before:transition-all before:lg:w-10 before:lg:h-10 before:w-6 before:h-6 before:rounded-full checked:before:translate-x-[100%]'
+              onChange={guideVocal}
+            />
+          </div>
+          {/* Guide Vocal */}
         </div>
       </div>
     </>

@@ -31,7 +31,7 @@ export default function SearchSection({
           })}
         </div>
       ) : (
-        <div className='p-3 rounded-lg text-center relative md:w-1/2 w-4/5'>
+        <div className='p-3 rounded-lg text-center relative lg:w-3/5 md:w-4/5 w-11/12'>
           <SearchCard
             info={res[0]}
             single={true}
