@@ -67,12 +67,20 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
 
   // Toggle guide vocal
   const guideVocal = () => {
-    vocalRef.current.currentTime = accompanimentRef.current.currentTime
     setIsGuiding(!isGuiding)
   }
 
   useEffect(() => {
     isGuiding && isPlaying ? vocalRef.current.play() : vocalRef.current.pause()
+
+    if (isPlaying) {
+      vocalRef.current.currentTime = accompanimentRef.current.currentTime
+      const intervalId = setInterval(() => {
+        vocalRef.current.currentTime = accompanimentRef.current.currentTime
+      }, 5000)
+
+      return () => clearInterval(intervalId)
+    }
   }, [isGuiding, isPlaying])
 
   return (
