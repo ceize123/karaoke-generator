@@ -106,13 +106,13 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
           onClick={(e) => onHandleTimelineUpdate(e)}
         >
           <div
-            className='progress transition-all h-2 bg-primary'
+            className='progress transition-all h-2 bg-primary -translate-x-[1px]'
             style={{
               width: `${(displayTime / duration) * 100}%`,
             }}
           ></div>
           <div
-            className='progress-ball absolute transition-all w-3 h-3 -top-0.5 bg-primary rounded-xl'
+            className='progress-ball absolute transition-all w-4 h-4 -top-1 bg-primary rounded-xl'
             style={{
               left: `${(displayTime / duration) * 100 - 2}%`,
             }}
@@ -171,11 +171,11 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
 
             <div
               ref={volumeRef}
-              className='volume-slider w-16 h-2 rounded bg-white cursor-pointer'
+              className='volume-slider w-16 h-2.5 -translate-x-[1px] rounded bg-white cursor-pointer'
               onClick={(e) => onHandleVolumeUpdate(e)}
             >
               <div
-                className='volume-percentage bg-primary h-full transition-all'
+                className='volume-percentage bg-primary rounded-tr rounded-br h-full transition-all'
                 style={{ width: `${volume * 100}%` }}
               ></div>
             </div>
