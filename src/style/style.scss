@@ -7,7 +7,7 @@
 html,
 body {
   overflow-x: hidden;
-  background-color: #10051f;
+  background-color: theme('colors.dark');
   color: white;
   font-family: 'Ubuntu', sans-serif;
 }
@@ -97,34 +97,34 @@ button {
 
 //tooltip ends
 
-// audio::-webkit-media-controls-panel {
-//   background-color: #e76f00;
+// Toggle Switch
+// input[type='checkbox']::before {
+// content: '';
+//   width: 24px;
+//   height: 24px;
+//   border-radius: 50%;
+//   background: #fff;
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   transition: 0.5s;
 // }
-audio::-webkit-media-controls-play-button,
-audio::-webkit-media-controls-mute-button,
-audio::-webkit-media-controls-volume-slider,
-audio::-webkit-media-controls-timeline {
-  background-color: #e76f00;
+
+input[type='checkbox']:checked::before {
+  content: url('../img/toggle.png');
+}
+@media only screen and (max-width: 1023px) {
+  input[type='checkbox']:checked::before {
+    content: url('../img/toggle-small.png');
+  }
 }
 
-audio::-webkit-media-controls-play-button,
-audio::-webkit-media-controls-mute-button {
-  border-radius: 50%;
+//
+.audio-player {
+  .controls {
+    .panel-button-bg {
+      @apply bg-primary rounded-full;
+      // background-color: theme('colors.primary');
+    }
+  }
 }
-
-audio::-webkit-media-controls-volume-slider {
-  border-radius: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-audio::-webkit-media-controls-timeline {
-  background-color: #e76f00;
-  border-radius: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-left: 10px;
-}
-// audio::-webkit-media-controls-panel {
-//   background-color: #e76f00;
-// }

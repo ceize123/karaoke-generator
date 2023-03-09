@@ -8,6 +8,7 @@ module.exports = {
         primary: '#E76F00',
         secondary: '#57476C',
         pink: '#FA4BC9',
+        dark: '#10051F',
       },
       screens: {
         '2xl': '1600px',
