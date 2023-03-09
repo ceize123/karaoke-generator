@@ -13,7 +13,12 @@ class MusicDataService {
 
   // Call api spleet task
   generate(data) {
-    return http.post('/api/addTask', data, { responseType: 'blob' })
+    return http.post('/api/generate_music', data, { responseType: 'blob' })
+  }
+
+  // Call api get vocal
+  get_vocal(data) {
+    return http.post('/api/get_vocal', data, { responseType: 'blob' })
   }
 
   // Call api unload

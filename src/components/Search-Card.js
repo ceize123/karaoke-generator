@@ -1,15 +1,5 @@
 import RoundedBtn from './Rounded-Btn'
-
-const timeFormat = (duration) => {
-  const mins = Math.floor(duration / 60)
-  const secs = duration % 60
-  let res = ''
-
-  res += mins + ':' + (secs < 10 ? '0' : '')
-  res += '' + secs
-
-  return res
-}
+import timeFormat from '../helpers'
 
 export default function SearchCard({
   info,

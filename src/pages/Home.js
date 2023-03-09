@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import BGPattern from '../components/BG-Pattern'
 import ErrorMsg from '../components/Error-Msg'
 import Form from '../components/Form'
-import AudioSection from '../components/Audio-Section'
+import AudioPlayer from '../components/Audio-Player'
 import Modal from '../components/Modal'
 import Footer from '../components/Footer'
 
@@ -23,7 +23,8 @@ function isValidHttpURL(string) {
 function Home() {
   const [status, setStatus] = useState('')
   const [modal, setModal] = useState(false)
-  const [data, setData] = useState()
+  const [accompaniment, setAccompaniment] = useState()
+  const [vocal, setVocal] = useState()
   const [searchRes, setSearchRes] = useState([])
   const [processing, setProcessing] = useState(false)
   const [complete, setComplete] = useState(false)
@@ -31,7 +32,8 @@ function Home() {
   const [active, setActive] = useState(false)
 
   const beginState = (option) => {
-    setData()
+    setAccompaniment()
+    setVocal()
     setProcessing(true)
     setStatus(option)
     setError('')
@@ -102,14 +104,16 @@ function Home() {
 
     try {
       setActive(true)
-      const res = await MusicDataService.generate(data)
+      const accompaniment = await MusicDataService.generate(data)
+      const vocal = await MusicDataService.get_vocal(data)
       setStatus('Done')
       setSearchRes([searchRes[index]])
-      if (res.data.size < 1000) {
+      if (accompaniment.data.size < 1000) {
         setError('Split')
         return
       }
-      setData(URL.createObjectURL(res.data))
+      setAccompaniment(URL.createObjectURL(accompaniment.data))
+      setVocal(URL.createObjectURL(vocal.data))
     } catch (e) {
       console.log(e)
       errorState('Download')
@@ -161,14 +165,22 @@ function Home() {
               res={searchRes}
               onHandleClick={onHandleDownload}
               processing={processing}
-              hasAudio={typeof data !== 'undefined' && error !== 'Split'}
+              hasAudio={
+                typeof accompaniment !== 'undefined' && error !== 'Split'
+              }
             />
           )}
           {/* Search Result */}
 
           {/* Output */}
-          {typeof data !== 'undefined' && error === '' && (
-            <AudioSection data={data} info={searchRes[0]} />
+          {typeof accompaniment !== 'undefined' && error === '' && (
+            <section>
+              <AudioPlayer
+                accompaniment={accompaniment}
+                vocal={vocal}
+                duration={searchRes[0]['duration']}
+              />
+            </section>
           )}
           {/* Output */}
         </main>
