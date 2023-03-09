@@ -65,26 +65,11 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
     accompanimentRef.current.muted = !accompanimentRef.current.muted
   }
 
-  const onHandleSpeed = (speed) => {
-    accompanimentRef.current.playbackRate = speed
-    vocalRef.current.playbackRate = speed
-  }
-
   // Toggle guide vocal
   const guideVocal = () => {
     vocalRef.current.currentTime = accompanimentRef.current.currentTime
     setIsGuiding(!isGuiding)
   }
-
-  // useEffect(() => {
-  //   if (isPlaying) {
-  //     accompanimentRef.current.play()
-  //     if (isGuiding) vocalRef.current.play()
-  //   } else {
-  //     accompanimentRef.current.pause()
-  //     vocalRef.current.pause()
-  //   }
-  // }, [isPlaying, isGuiding])
 
   useEffect(() => {
     isGuiding && isPlaying ? vocalRef.current.play() : vocalRef.current.pause()
@@ -112,32 +97,7 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
       </div>
       {/* Audio Original */}
 
-      {/* Panel */}
-      <div className={`flex flex-col items-center`}>
-        <p onClick={() => onHandlePlay()}>{isPlaying ? 'Start' : 'Stop'}</p>
-        <div>
-          {timeFormat(displayTime)} / {timeFormat(duration)}
-          <button onClick={() => onHandleTime(-5)}>-5</button>
-          <button onClick={() => onHandleTime(5)}>+5</button>
-        </div>
-        <div>
-          Speed:
-          <button onClick={() => onHandleSpeed(0.5)}>0.5</button>
-          <button onClick={() => onHandleSpeed(0.75)}>0.75</button>
-          <button onClick={() => onHandleSpeed(1)}>1</button>
-          <button onClick={() => onHandleSpeed(1.25)}>1.25</button>
-          <button onClick={() => onHandleSpeed(1.5)}>1.5</button>
-        </div>
-        <p className='text-base'>Guide Vocal</p>
-        <input
-          type='checkbox'
-          checked={isGuiding}
-          className='relative w-12 h-6 bg-secondary appearance-none cursor-pointer rounded-3xl checked:bg-primary'
-          onChange={guideVocal}
-        />
-      </div>
-      {/* Panel */}
-
+      {/* Custom Audio Player */}
       <div className=' mt-3 audio-player relative flex sm:w-3/5 w-11/12 h-20 mx-auto rounded-[40px] bg-dark border-8 border-primary text-white'>
         {/* Timeline */}
         <div
@@ -235,6 +195,7 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
           {/* Guide Vocal */}
         </div>
       </div>
+      {/* Custom Audio Player */}
     </>
   )
 }
