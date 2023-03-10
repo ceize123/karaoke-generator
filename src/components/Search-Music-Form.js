@@ -1,6 +1,6 @@
 import bgBar from '../img/bg-input-bar.png'
 
-export default function Form({ handleSubmit, processing }) {
+export default function MusicForm({ handleSubmit, processing }) {
   return (
     <section className='md:w-2/3 w-full 2xl:h-80 md:h-[450px] h-80 relative flex items-end mx-auto overflow-hidden'>
       <form onSubmit={handleSubmit} className='text-center mx-2 sm:mx-0 grow'>

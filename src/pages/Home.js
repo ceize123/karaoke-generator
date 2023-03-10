@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import '../style/style.css'
 import MusicDataService from '../services/music.service'
-import SearchSection from '../components/Search-Section'
+import ResultMusicSection from '../components/Result-Music-Section'
 import { v4 as uuidv4 } from 'uuid'
 import BGPattern from '../components/BG-Pattern'
 import ErrorMsg from '../components/Error-Msg'
-import Form from '../components/Form'
+import MusicForm from '../components/Search-Music-Form'
 import AudioPlayer from '../components/Audio-Player'
 import Modal from '../components/Modal'
 import Footer from '../components/Footer'
@@ -150,7 +150,7 @@ function Home() {
         <BGPattern />
         <main>
           {/* Form */}
-          <Form handleSubmit={handleSubmit} processing={processing} />
+          <MusicForm handleSubmit={handleSubmit} processing={processing} />
           {/* Form */}
 
           {modal && <Modal status={status} setComplete={setComplete} />}
@@ -161,7 +161,7 @@ function Home() {
 
           {/* Search Result */}
           {searchRes.length > 0 && (
-            <SearchSection
+            <ResultMusicSection
               res={searchRes}
               onHandleClick={onHandleDownload}
               processing={processing}

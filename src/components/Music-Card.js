@@ -1,7 +1,7 @@
 import RoundedBtn from './Rounded-Btn'
 import timeFormat from '../helpers'
 
-export default function SearchCard({
+export default function MusicCard({
   info,
   single,
   onHandleClick,
