@@ -11,13 +11,13 @@ export default function Footer({ initial }) {
         initial ? 'fixed bottom-0' : ''
       }`}
     >
-      <p className='mb-3 text-base'>Let us know your opinion!</p>
+      <p className='mb-3'>Let us know your opinion!</p>
       <RoundedBtn
-        size='text-base py-2 px-6'
+        sizeClass='small-btn'
         text='Contact'
         onHandleClick={handleClick}
       />
-      <p className='mt-6 text-[12px]'>All Rights Reserved.</p>
+      <span className='mt-6'>All Rights Reserved.</span>
     </footer>
   )
 }

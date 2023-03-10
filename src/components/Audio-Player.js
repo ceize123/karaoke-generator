@@ -145,19 +145,15 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
           {/* Time */}
           <div className='time flex justify-center items-center'>
             <div className='panel-button-bg w-8 h-8 flex justify-center'>
-              <button className='text-xs' onClick={() => onHandleTime(-5)}>
-                -5s
-              </button>
+              <button onClick={() => onHandleTime(-5)}>-5s</button>
             </div>
             <div className='lg:mx-4 mx-1.5'>
-              <p className='text-base'>
+              <p>
                 {timeFormat(displayTime)} / {timeFormat(duration)}
               </p>
             </div>
             <div className='panel-button-bg w-8 h-8 flex justify-center'>
-              <button className='text-xs' onClick={() => onHandleTime(5)}>
-                +5s
-              </button>
+              <button onClick={() => onHandleTime(5)}>+5s</button>
             </div>
           </div>
           {/* Time */}

@@ -1,5 +1,5 @@
 export default function RoundedBtn({
-  size,
+  sizeClass,
   text,
   onHandleClick,
   processing = false,
@@ -9,7 +9,7 @@ export default function RoundedBtn({
       onClick={() => {
         onHandleClick()
       }}
-      className={`bg-primary ${size}`}
+      className={`bg-primary ${sizeClass}`}
       disabled={processing}
     >
       {text}

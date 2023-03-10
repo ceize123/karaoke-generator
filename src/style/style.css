@@ -11,20 +11,18 @@ body {
 }
 
 h1 {
-  font-size: 48px;
-  font-weight: bold;
+  @apply lg:text-5xl text-3xl font-bold;
 }
 
 h2 {
-  font-size: 32px;
-  font-weight: 500;
+  @apply lg:text-3xl text-2xl font-medium;
 }
 
 h3,
 p,
 input,
 button {
-  font-size: 24px;
+  @apply lg:text-2xl text-base;
 }
 
 input {
@@ -32,9 +30,7 @@ input {
 }
 
 button {
-  padding: 6px 14px;
-  border-radius: 40px;
-  font-weight: 500;
+  @apply font-medium py-1.5 px-3.5 rounded-[40px];
 }
 
 .img-container {
@@ -52,33 +48,20 @@ button {
   content: "...";
 }
 
+.small-btn {
+  @apply text-base py-2 px-6;
+}
+
+.big-btn {
+  @apply lg:text-2xl text-base lg:py-4 lg:px-6 py-2 px-6;
+}
+
 @keyframes extend {
   0% {
     width: 0.25em;
   }
   100% {
     width: 1em;
-  }
-}
-@media only screen and (max-width: 1023px) {
-  h1 {
-    font-size: 32px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  h3,
-p,
-input,
-button {
-    font-size: 16px;
-  }
-
-  .triangle {
-    border: 2.3vw solid transparent;
-    border-bottom: 3.5vw solid;
   }
 }
 .tooltip .tooltip-text {
@@ -100,6 +83,21 @@ input[type=checkbox]:checked::before {
 }
 .audio-player .controls .panel-button-bg {
   @apply bg-primary rounded-full;
+}
+.audio-player .controls p {
+  @apply text-base;
+}
+.audio-player .controls button {
+  @apply text-xs;
+}
+
+footer p,
+.error p {
+  @apply text-base;
+}
+footer span,
+.error span {
+  @apply text-xs;
 }
 
 /*# sourceMappingURL=style.css.map */
