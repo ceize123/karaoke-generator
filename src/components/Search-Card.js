@@ -43,11 +43,7 @@ export default function SearchCard({
       {/* <Button content={item} onHandleChange={onHandleChange} /> */}
       {!hasAudio && (
         <RoundedBtn
-          size={`${
-            single
-              ? 'lg:text-2xl lg:py-4 lg:px-6 text-base py-2 px-6'
-              : 'text-base py-2 px-6'
-          }`}
+          sizeClass={`${single ? 'big-btn' : 'small-btn'}`}
           text='Generate'
           onHandleClick={onHandleClick}
           processing={processing}
