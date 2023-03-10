@@ -75,11 +75,6 @@ export default function AudioPlayer({ accompaniment, vocal, duration }) {
 
     if (isPlaying) {
       vocalRef.current.currentTime = accompanimentRef.current.currentTime
-      const intervalId = setInterval(() => {
-        vocalRef.current.currentTime = accompanimentRef.current.currentTime
-      }, 5000)
-
-      return () => clearInterval(intervalId)
     }
   }, [isGuiding, isPlaying])
 
